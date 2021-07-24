@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Intro.Models.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +13,17 @@ namespace Intro.WebApi.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        private readonly ILogger<UsersController> _logger;
+
+        public UsersController()
+        {
+
+        }
+
+        [HttpGet]
+        public List<User> GetAllUsers()
+        {
+            return null;
+        }
     }
 }
