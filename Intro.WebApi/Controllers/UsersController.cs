@@ -1,4 +1,5 @@
-﻿using Intro.Models.Model;
+﻿using Intro.Models.DTO;
+using Intro.Models.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -24,6 +25,24 @@ namespace Intro.WebApi.Controllers
         public List<User> GetAllUsers()
         {
             return null;
+        }
+
+        [HttpPost]
+        public void PostUser(UserDTO userDTO)
+        {
+
+        }
+
+        [HttpPut]
+        public void PutUser([FromQuery] string userId)
+        {
+
+        }
+
+        [HttpDelete]
+        public void DeleteUser()
+        {
+
         }
     }
 }
