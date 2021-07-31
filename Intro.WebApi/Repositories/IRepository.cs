@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace Intro.WebApi.Repositories
 {
-    interface IRepository<T> where T:class
+    public interface IRepository<T> where T:class
     {
         List<T> GetAll();
-        T GetEntityByID(string id);
+        T GetEntityByID(int id);
 
     }
 }

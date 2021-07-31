@@ -1,5 +1,6 @@
 ﻿using Intro.Models.DTO;
 using Intro.Models.Model;
+using Intro.WebApi.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,16 +16,24 @@ namespace Intro.WebApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ILogger<UsersController> _logger;
+        private readonly IRepository<User> _usersRepository;
+        private readonly IntroProjectContext _context;
 
-        public UsersController()
+        public UsersController(ILogger<UsersController> logger, 
+                               IRepository<User> usersRepository, 
+                               IntroProjectContext context)
         {
-
+            _logger = logger;
+            _usersRepository = usersRepository;
+            _context = context;
         }
 
         [HttpGet]
-        public List<User> GetAllUsers()
+        public ActionResult<List<UserDTO>> GetAllUsers()
         {
-            return null;
+
+
+            return Ok(null);
         }
 
         [HttpPost]
@@ -40,9 +49,19 @@ namespace Intro.WebApi.Controllers
         }
 
         [HttpDelete]
-        public void DeleteUser()
+        public ActionResult DeleteUser([FromQuery]int userId)
         {
-
+            User user = _context.Users.FirstOrDefault(x => x.Id == userId);
+            if (user != null)
+            {
+                user.IsActive = false;
+                _context.SaveChanges();
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
         }
     }
 }

@@ -6,22 +6,23 @@ using System.Threading.Tasks;
 
 namespace Intro.WebApi.Repositories
 {
-    public class UserRepository : IRepository<User>
+    public class UserTypeRepository : IRepository<UserType>
     {
+
         IntroProjectContext _context;
-        public UserRepository(IntroProjectContext context)
+        public UserTypeRepository(IntroProjectContext context)
         {
             _context = context;
         }
 
-        public List<User> GetAll()
+        public List<UserType> GetAll()
         {
-            return _context.Users.ToList();
+            throw new NotImplementedException();
         }
 
-        public User GetEntityByID(int id)
+        public UserType GetEntityByID(int id)
         {
-            return _context.Users.FirstOrDefault(x=>x.Id == id);
+            throw new NotImplementedException();
         }
     }
 }

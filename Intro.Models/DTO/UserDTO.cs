@@ -10,9 +10,10 @@ namespace Intro.Models.DTO
         public string Name { get; set; }
         public string Surname { get; set; }
         public DateTime? BirthDate { get; set; }
-        public int UserTypeId { get; set; }
-        public int UserTitleId { get; set; }
+        public UsertTypeDTO UserType { get; set; }
+        
+        public UserTitleDTO UserTitleId { get; set; }
         public string EmailAddress { get; set; }
-        public bool? IsActive { get; set; }
+        //public bool? IsActive { get; set; }
     }
 }
