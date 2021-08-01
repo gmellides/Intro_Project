@@ -1,10 +1,8 @@
 ﻿using Intro.Models.DTO;
 using Intro.Models.Model;
 using Intro.WebApi.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,8 +15,6 @@ namespace Intro.WebApi.Controllers
     {
         private readonly ILogger<UsersController> _logger;
         private readonly IRepository<User> _usersRepository;
-        private readonly IRepository<UserTitle> _userTitleRepository;
-        private readonly IRepository<UserType> _userTypeRepository;
         private readonly IntroProjectContext _context;
 
         public UsersController(ILogger<UsersController> logger,
@@ -29,22 +25,30 @@ namespace Intro.WebApi.Controllers
         {
             _logger = logger;
             _usersRepository = usersRepository;
-            _userTitleRepository = userTitleRepository;
-            _userTypeRepository = userTypeRepository;
             _context = context;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public ActionResult<List<User>> GetAllUsers()
+        public async Task<ActionResult<List<UserDTO>>> GetAllUsers()
         {
             List<User> users = _usersRepository.GetAll();
-            users.ForEach(x => x.UserTitle = _userTitleRepository.GetEntityByID(x.UserTitleId));
-            users.ForEach(x => x.UserType = _userTypeRepository.GetEntityByID(x.UserTypeId));
-            return Ok(users);
+           
+
+            return Ok(null);
         }
 
+        /// <summary>
+        /// Users controller Post action 
+        /// End Point: POST https://localhost:44362/api/Users
+        /// This method will check the user input and it will save a user in database.
+        /// </summary>
+        /// <param name="userDTO">User information that needs to be added.</param>
         [HttpPost]
-        public void PostUser(UserDTO userDTO)
+        public async Task<ActionResult> PostUser(UserDTO userDTO)
         {
             User user = new User
             {
@@ -64,15 +68,24 @@ namespace Intro.WebApi.Controllers
             };
             _context.Users.Add(user);
             _context.SaveChanges();
-
+            return Ok();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
         [HttpPut]
-        public void PutUser([FromQuery] string userId)
+        public void PutUser([FromQuery] string userId,UserDTO user)
         {
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         [HttpDelete]
         public ActionResult DeleteUser([FromQuery] int userId)
         {
@@ -88,5 +101,6 @@ namespace Intro.WebApi.Controllers
                 return NotFound();
             }
         }
+
     }
 }
