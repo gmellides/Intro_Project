@@ -12,7 +12,7 @@ namespace Intro.Models.DTO
         public DateTime? BirthDate { get; set; }
         public UsertTypeDTO UserType { get; set; }
         
-        public UserTitleDTO UserTitleId { get; set; }
+        public UserTitleDTO UserTitle { get; set; }
         public string EmailAddress { get; set; }
         //public bool? IsActive { get; set; }
     }

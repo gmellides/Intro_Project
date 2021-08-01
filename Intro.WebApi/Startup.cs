@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Intro.WebApi
 {
@@ -29,6 +30,9 @@ namespace Intro.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IRepository<User>,UserRepository>();
+            services.AddScoped<IRepository<UserTitle>, UserTitleRepository>();
+            services.AddScoped<IRepository<UserType>, UserTypeRepository>();
+
             services.AddDbContext<IntroProjectContext>(options => options.UseSqlServer(Configuration.GetConnectionString("IntroProjectDB")));
             services.AddControllers();
         }

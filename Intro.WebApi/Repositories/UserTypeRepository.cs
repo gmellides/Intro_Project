@@ -8,8 +8,8 @@ namespace Intro.WebApi.Repositories
 {
     public class UserTypeRepository : IRepository<UserType>
     {
-
         IntroProjectContext _context;
+
         public UserTypeRepository(IntroProjectContext context)
         {
             _context = context;
@@ -17,12 +17,12 @@ namespace Intro.WebApi.Repositories
 
         public List<UserType> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.UserTypes.ToList();
         }
 
         public UserType GetEntityByID(int id)
         {
-            throw new NotImplementedException();
+            return _context.UserTypes.FirstOrDefault(x=>x.Id == id);
         }
     }
 }

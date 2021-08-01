@@ -21,7 +21,7 @@ namespace Intro.WebApi.Repositories
 
         public UserTitle GetEntityByID(int id)
         {
-            return _context.UserTitles.FirstOrDefault(x=>x.Id == id)
+            return _context.UserTitles.FirstOrDefault(x => x.Id == id);
         }
     }
 }
