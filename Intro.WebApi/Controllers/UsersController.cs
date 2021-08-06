@@ -50,22 +50,7 @@ namespace Intro.WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult> PostUser(UserDTO userDTO)
         {
-            User user = new User
-            {
-                Name = userDTO.Name,
-                Surname = userDTO.Surname,
-                BirthDate = userDTO.BirthDate,
-                EmailAddress = userDTO.EmailAddress,
-                UserType = new UserType { 
-                    Code = userDTO.UserType.Code, 
-                    Description = userDTO.UserType.Desctiption 
-                },
-                UserTitle = new UserTitle
-                {
-                    Description = userDTO.UserTitle.Description
-                },
-                IsActive = true
-            };
+            
             _context.Users.Add(user);
             _context.SaveChanges();
             return Ok();
@@ -76,9 +61,9 @@ namespace Intro.WebApi.Controllers
         /// </summary>
         /// <param name="userId"></param>
         [HttpPut]
-        public void PutUser([FromQuery] string userId,UserDTO user)
+        public void PutUser([FromQuery] int userId,UserDTO user)
         {
-
+           // EditUserAction(userId, user);
         }
 
         /// <summary>

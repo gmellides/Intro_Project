@@ -50,5 +50,36 @@ namespace Intro.WebApi.Services
             }
             return userDTOs;
         }
+
+        public void EditUserAction(int userId,UserDTO userDTO)
+        {
+            User user = _context.Users.FirstOrDefault(x=>x.Id == userId);
+            if (user != null)
+            {
+                
+            }
+        }
+
+
+        public User CreateUserEntry(UserDTO userDTO)
+        {
+            return new User
+            {
+                Name = userDTO.Name,
+                Surname = userDTO.Surname,
+                BirthDate = userDTO.BirthDate,
+                EmailAddress = userDTO.EmailAddress,
+                UserType = new UserType
+                {
+                    Code = userDTO.UserType.Code,
+                    Description = userDTO.UserType.Desctiption
+                },
+                UserTitle = new UserTitle
+                {
+                    Description = userDTO.UserTitle.Description
+                },
+                IsActive = true
+            };
+        }
     }
 }
