@@ -4,16 +4,15 @@ using System.Text;
 
 namespace Intro.Models.DTO
 {
-    public class UserDTO
+    public class CreateUserDTO
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public DateTime? BirthDate { get; set; }
-        public UsertTypeDTO UserType { get; set; }
-        
-        public UserTitleDTO UserTitle { get; set; }
+        public string UserTypeDescription { get; set; }
+        public string UserTypeCode { get; set; }
+        public string UserTitleDescription { get; set; }
         public string EmailAddress { get; set; }
-        
     }
 }

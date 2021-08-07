@@ -24,5 +24,6 @@ namespace Intro.WebApi.Repositories
         {
             return _context.UserTypes.FirstOrDefault(x=>x.Id == id);
         }
+
     }
 }
