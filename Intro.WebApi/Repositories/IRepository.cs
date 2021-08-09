@@ -9,6 +9,5 @@ namespace Intro.WebApi.Repositories
     {
         List<T> GetAll();
         T GetEntityByID(int id);
-
     }
 }

@@ -11,10 +11,10 @@ export class MapComponent implements OnInit {
   public longitude = 14.430219;
   public zoomLevel = 7;
   
-private mapView;
 
   constructor() { 
 
+    
   }
 
   ngOnInit() {

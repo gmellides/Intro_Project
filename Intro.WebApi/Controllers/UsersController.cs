@@ -1,10 +1,13 @@
 ﻿using Intro.Models.DTO;
 using Intro.Models.Model;
 using Intro.WebApi.Repositories;
+using Intro.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Intro.WebApi.Controllers
@@ -15,17 +18,20 @@ namespace Intro.WebApi.Controllers
     {
         private readonly ILogger<UsersController> _logger;
         private readonly IRepository<User> _usersRepository;
+        private readonly IUserService _userService;
         private readonly IntroProjectContext _context;
 
         public UsersController(ILogger<UsersController> logger,
                                IRepository<User> usersRepository,
                                IRepository<UserTitle> userTitleRepository,
                                IRepository<UserType> userTypeRepository,
+                               IUserService userService,
                                IntroProjectContext context)
         {
             _logger = logger;
             _usersRepository = usersRepository;
             _context = context;
+            _userService = userService;
         }
 
         /// <summary>
@@ -50,35 +56,47 @@ namespace Intro.WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult> PostUser(UserDTO userDTO)
         {
-            User user = new User
+            if (ValidateUserDTO(userDTO))
             {
-                Name = userDTO.Name,
-                Surname = userDTO.Surname,
-                BirthDate = userDTO.BirthDate,
-                EmailAddress = userDTO.EmailAddress,
-                UserType = new UserType { 
-                    Code = userDTO.UserType.Code, 
-                    Description = userDTO.UserType.Desctiption 
-                },
-                UserTitle = new UserTitle
-                {
-                    Description = userDTO.UserTitle.Description
-                },
-                IsActive = true
-            };
-            _context.Users.Add(user);
-            _context.SaveChanges();
+                _logger.LogError($"PostUser - Invalid Input error");
+                return StatusCode(400);
+            }
+
+            try
+            {
+               await _userService.CreateUserAction(userDTO);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"PostUser - An error occured with message {e.Message} and stackTrace {e.StackTrace}");
+                return StatusCode(500);
+            }
             return Ok();
         }
-
+        
         /// <summary>
         /// 
         /// </summary>
         /// <param name="userId"></param>
         [HttpPut]
-        public void PutUser([FromQuery] string userId,UserDTO user)
+        public async Task<ActionResult> PutUser([FromQuery] int userId,UserDTO userDTO)
         {
+            if (ValidateUserDTO(userDTO))
+            {
+                _logger.LogError($"PutUser - Invalid Input error");
+                return StatusCode(400);
+            }
 
+            try
+            {
+                await _userService.EditUserAction(userId,userDTO);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"PutUser - An error occured with message {e.Message} and stackTrace {e.StackTrace}");
+                return StatusCode(500);
+            }
+            return Ok();
         }
 
         /// <summary>
@@ -89,6 +107,12 @@ namespace Intro.WebApi.Controllers
         [HttpDelete]
         public ActionResult DeleteUser([FromQuery] int userId)
         {
+            if (userId.GetType() != typeof(Int32))
+            {
+                _logger.LogError($"DeleteUser - Invalid Input error");
+                return StatusCode(400);
+            }
+
             User user = _context.Users.FirstOrDefault(x => x.Id == userId);
             if (user != null)
             {
@@ -102,5 +126,33 @@ namespace Intro.WebApi.Controllers
             }
         }
 
+        #region Private Helpers        
+        /// <summary>
+        /// Validates the user dto.
+        /// </summary>
+        /// <param name="userDTO">The user dto.</param>
+        /// <returns>TRUE if input is Valid and FALSE if input is Invalid</returns>
+        private bool ValidateUserDTO(UserDTO userDTO)
+        {
+            #region Check for null properties
+            foreach(PropertyInfo info in userDTO.GetType().GetProperties())
+            {
+                if(info.Name != "BirthDate")
+                {
+
+                }
+            }
+            #endregion
+
+
+            if (userDTO.Name.Any(char.IsDigit) || string.IsNullOrWhiteSpace(userDTO.Name) ||
+                userDTO.Surname.Any(char.IsDigit) || string.IsNullOrWhiteSpace(userDTO.Surname) ||
+                string.IsNullOrWhiteSpace(userDTO.EmailAddress) )
+                return false;
+           
+
+            return true;
+        }
+        #endregion
     }
 }
