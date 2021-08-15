@@ -10,9 +10,9 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { MapComponent } from './map/map.component';
-import { AddUserComponent } from './add-user/add-user.component';
 import { FooterComponent } from './footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UsersComponent } from './users/users.component';
 
 @NgModule({
   declarations: [
@@ -22,8 +22,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CounterComponent,
     FetchDataComponent,
     MapComponent,
-    AddUserComponent,
-    FooterComponent
+    FooterComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
