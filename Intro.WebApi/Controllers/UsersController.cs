@@ -41,10 +41,9 @@ namespace Intro.WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<List<UserDTO>>> GetAllUsers()
         {
-            List<User> users = _usersRepository.GetAll();
-           
+            List<UserDTO> users = _userService.MapUserDTO(_usersRepository.GetAll());
 
-            return Ok(null);
+            return Ok(users);
         }
 
         /// <summary>
@@ -107,23 +106,16 @@ namespace Intro.WebApi.Controllers
         [HttpDelete]
         public ActionResult DeleteUser([FromQuery] int userId)
         {
-            if (userId.GetType() != typeof(Int32))
+            try
             {
-                _logger.LogError($"DeleteUser - Invalid Input error");
+                _userService.DeleteUser(userId).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"DeleteUser - Exception occured with message {e.Message}");
                 return StatusCode(400);
             }
-
-            User user = _context.Users.FirstOrDefault(x => x.Id == userId);
-            if (user != null)
-            {
-                user.IsActive = false;
-                _context.SaveChanges();
-                return Ok();
-            }
-            else
-            {
-                return NotFound();
-            }
+            return Ok();
         }
 
         #region Private Helpers        
@@ -143,8 +135,7 @@ namespace Intro.WebApi.Controllers
                 }
             }
             #endregion
-
-
+            
             if (userDTO.Name.Any(char.IsDigit) || string.IsNullOrWhiteSpace(userDTO.Name) ||
                 userDTO.Surname.Any(char.IsDigit) || string.IsNullOrWhiteSpace(userDTO.Surname) ||
                 string.IsNullOrWhiteSpace(userDTO.EmailAddress) )
@@ -153,6 +144,7 @@ namespace Intro.WebApi.Controllers
 
             return true;
         }
+
         #endregion
     }
 }

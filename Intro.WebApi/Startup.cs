@@ -30,7 +30,20 @@ namespace Intro.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IRepository<User>,UserRepository>();
+            services.AddCors(
+                options =>
+                {
+                    options.AddPolicy("customPolicy",
+                                      builder =>
+                                      {
+                                          builder.WithOrigins("http://localhost:4200",
+                                                              "http://localhost:51317")
+                                                              .AllowAnyHeader()
+                                                              .AllowAnyMethod();
+                                      });
+                }
+            );
+            services.AddScoped<IRepository<User>, UserRepository>();
             services.AddScoped<IRepository<UserTitle>, UserTitleRepository>();
             services.AddScoped<IRepository<UserType>, UserTypeRepository>();
             services.AddScoped<IUserService, UserServices>();
@@ -50,6 +63,8 @@ namespace Intro.WebApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(); // Use Cors
 
             app.UseAuthorization();
 

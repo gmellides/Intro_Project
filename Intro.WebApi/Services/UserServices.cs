@@ -37,7 +37,7 @@ namespace Intro.WebApi.Services
             }
             else
             {
-                _logger.LogInformation($"There is no user with Id {userId}");
+                _logger.LogInformation($"User Not Found: There is no user with Id {userId}");
             }
         }
 
@@ -67,10 +67,11 @@ namespace Intro.WebApi.Services
                 if (user.UserTitle.Description != userDTO.UserTitle.Description)
                     user.UserTitle.Description = userDTO.UserTitle.Description;
 
+                await _context.SaveChangesAsync();
             }
             else
             {
-
+                _logger.LogInformation($"Edit User: There is no user with Id {userId}");
             }
         }
 
@@ -97,8 +98,7 @@ namespace Intro.WebApi.Services
             await _context.SaveChangesAsync();
         }
 
-        #region Private Mapping Helpers
-        private List<UserDTO> MapUserDTO(List<User> users)
+        public List<UserDTO> MapUserDTO(List<User> users)
         {
             List<UserDTO> userDTOs = new List<UserDTO>();
             // Link User Title and type
@@ -126,7 +126,8 @@ namespace Intro.WebApi.Services
             }
             return userDTOs;
         }
-        private UserDTO MapUserDTO(User user)
+
+        public UserDTO MapUserDTO(User user)
         {
             // Link User Title and type
             user.UserTitle = _userTitleRepository.GetEntityByID(user.UserTitleId);
@@ -152,6 +153,5 @@ namespace Intro.WebApi.Services
 
             return userDTO;
         }
-        #endregion
     }
 }
