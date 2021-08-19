@@ -1,4 +1,4 @@
-import { OnInit } from '@angular/core';
+import { Inject, OnInit } from '@angular/core';
 import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UserService } from '../user.service';
@@ -15,6 +15,8 @@ export class HomeComponent implements OnInit,OnDestroy{
   constructor(private userService:UserService){}
 
   mapLoadedEvent(status: boolean) {
+
+
     console.log('The map loaded: ' + status);
   }
 
@@ -25,6 +27,8 @@ export class HomeComponent implements OnInit,OnDestroy{
         error: err => console.log("Error occured in User service")
       }
     );
+
+    console.log(this._usersCollection);
   }
   
   ngOnDestroy(): void {

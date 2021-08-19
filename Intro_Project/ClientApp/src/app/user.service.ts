@@ -1,5 +1,5 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { IUser } from './users/user.interface';
 import { catchError } from 'rxjs/operators';
@@ -9,12 +9,16 @@ import { throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  private api = " ";
-  constructor(private httpClient:HttpClient) { }
+  private baseUrl = '';
+  private api = "/api/Users";
 
-  //#region API Methods
+  constructor(private httpClient:HttpClient,@Inject('WEB_API_URL') webApiUrl: string) { 
+    this.baseUrl = webApiUrl;
+  }
+
+  //#region API Methods   
   getAllUsers() : Observable<IUser[]> {
-    return this.httpClient.get<IUser[]>(this.api).pipe(
+    return this.httpClient.get<IUser[]>(this. baseUrl+this.api).pipe(
       catchError(this.handleError)
     );
   }

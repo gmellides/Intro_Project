@@ -1,0 +1,49 @@
+<div *ngIf="isMiniTable; then showMiniTable else showFullTable"></div>
+
+<ng-template #showMiniTable>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor = "let user of users">
+        <th scope="row">{{user.id}}</th>
+        <td>{{user.name}}</td>
+        <td>{{user.surname}}</td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
+
+<ng-template #showFullTable>
+  <div class="row">
+    <mat-table class="lessons-table mat-elevation-z8" [dataSource]="users">
+    
+        <!-- <ng-container matColumnDef="seqNo">
+            <div *matHeaderCellDef>#</div>
+            <div *matCellDef="let lesson">{{lesson.seqNo}}</div>
+        </ng-container>
+      
+        <ng-container matColumnDef="description">
+            <div *matHeaderCellDef>Description</div>
+            <div class="description-cell"
+                      *matCellDef="let lesson">{{lesson.description}}</div>
+        </ng-container>
+      
+        <ng-container matColumnDef="duration">
+            <div *matHeaderCellDef>Duration</div>
+            <div class="duration-cell"
+                      *matCellDef="let lesson">{{lesson.duration}}</div>
+        </ng-container> -->
+        
+        <!-- <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row> -->
+        
+    </mat-table>
+  </div>
+</ng-template>

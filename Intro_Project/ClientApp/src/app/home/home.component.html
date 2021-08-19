@@ -1,18 +1,38 @@
 <h2>Intro project</h2>
 <hr>
 
-<h4>Application Users</h4>
+<h4>Users</h4>
 <div class="row">
-    <div class="col" >
-        <!-- <p>There are {{ _usersCollection.lenght }} registered Users</p> -->
+    <div class="col">
+        <div *ngIf="_usersCollection === undefined || !_usersCollection.length; then messageNoUsers; else usersMiniTable;"></div>
+
+        <ng-template #messageNoUsers>
+            <p>Use the menu to add some users.</p>
+        </ng-template>
+
+        <ng-template #usersMiniTable>
+            <app-users-table [isMiniTable]="true" [users]='_usersCollection'></app-users-table>
+        </ng-template>
+
     </div>
     <div class="col">
-        <button class="btn btn-primary">Click for more actions</button>
+        <div class="card" style="width: 18rem;">
+            <div class="card-header">
+                <h4>Users Menu</h4>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><button class="btn btn-link">Add New User</button> </li>
+                <li class="list-group-item"><button class="btn btn-link">Show All Users</button></li>
+            </ul>
+        </div>
     </div>
 </div>
 
 <hr>
+
 <h4>ArcGIS Map</h4>
 <div style="height: 300px; width: 400px;">
-    <app-map [latitude]='35.892722' [longitude]="14.430219" [zoomLevel]="7"> </app-map>
+    <div class="row">
+        <app-map [latitude]='35.892722' [longitude]="14.430219" [zoomLevel]="7"> </app-map>
+    </div>
 </div>
