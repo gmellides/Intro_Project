@@ -16,7 +16,7 @@
 
     </div>
     <div class="col">
-        <div class="card" style="width: 18rem;">
+        <div class="card" style="width: 100%;">
             <div class="card-header">
                 <h4>Users Menu</h4>
             </div>
@@ -31,8 +31,6 @@
 <hr>
 
 <h4>ArcGIS Map</h4>
-<div style="height: 300px; width: 400px;">
-    <div class="row">
-        <app-map [latitude]='35.892722' [longitude]="14.430219" [zoomLevel]="7"> </app-map>
-    </div>
+<div style="height: 500px; width: 90%;">
+    <app-map  isMiniMap="true" [latitude]='35.898819' [longitude]="14.513474" [zoomLevel]="15"> </app-map>
 </div>

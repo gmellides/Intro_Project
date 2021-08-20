@@ -13,8 +13,8 @@ import { IUser } from '../user.interface';
 export class UsersTableComponent implements OnInit {
   @Input() private isMiniTable = false;
   @Input() private users = [];
-  private usersDataSource :MatTableDataSource<IUser> = null;
-  private _userSubscribtion:Subscription;
+  private usersDataSource : MatTableDataSource<IUser> = null;
+  private _userSubscribtion : Subscription;
    
   @ViewChild(MatPaginator,{static:true}) paginator:MatPaginator;
 

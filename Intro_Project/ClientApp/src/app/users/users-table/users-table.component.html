@@ -21,7 +21,7 @@
 
 <ng-template #showFullTable>
   <div class="row">
-    <mat-table class="lessons-table mat-elevation-z8" [dataSource]="users">
+    <mat-table class="mat-elevation-z8" [dataSource]="users">
     
         <!-- <ng-container matColumnDef="seqNo">
             <div *matHeaderCellDef>#</div>
@@ -38,9 +38,9 @@
             <div *matHeaderCellDef>Duration</div>
             <div class="duration-cell"
                       *matCellDef="let lesson">{{lesson.duration}}</div>
-        </ng-container> -->
+        </ng-container> 
         
-        <!-- <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row> -->
         

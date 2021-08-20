@@ -1,6 +1,6 @@
 @import url('https://js.arcgis.com/4.20/esri/css/main.css');
 
-#mapView{
+.mapViewStyle{
     width: 100%;
     height: 100%;
 }

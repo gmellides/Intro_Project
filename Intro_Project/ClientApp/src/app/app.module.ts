@@ -9,7 +9,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
-import { MapComponent } from './map/map.component';
+import { MapComponent } from './map-page/map/map.component';
 import { FooterComponent } from './footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UsersComponent } from './users/users.component';
@@ -17,10 +17,11 @@ import { UsersTableComponent } from './users/users-table/users-table.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatInputModule} from '@angular/material/input';
+import { MapPageComponent } from './map-page/map-page.component';
 
 
 @NgModule({
-  declarations: [
+  declarations: [	
     AppComponent,
     NavMenuComponent,
     HomeComponent,
@@ -29,8 +30,9 @@ import {MatInputModule} from '@angular/material/input';
     MapComponent,
     FooterComponent,
     UsersComponent,
-    UsersTableComponent
-  ],
+    UsersTableComponent,
+    MapPageComponent
+   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
@@ -42,7 +44,8 @@ import {MatInputModule} from '@angular/material/input';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'users',component:UsersComponent}
+      { path: 'users', component:UsersComponent },
+      { path: 'map', component:MapPageComponent }
     ]),
     BrowserAnimationsModule
   ],
