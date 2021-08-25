@@ -24,8 +24,6 @@
     "@angular/platform-server": "9.1.13",
     "@angular/router": "9.1.13",
     "@arcgis/core": "^4.20.2",
-    "@ngrx/store": "^8.6.1",
-    "@nguniversal/module-map-ngfactory-loader": "8.1.1",
     "aspnet-prerendering": "^3.0.1",
     "bootstrap": "^4.6.0",
     "core-js": "^3.8.3",
