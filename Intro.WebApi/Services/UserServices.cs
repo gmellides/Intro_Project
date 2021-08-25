@@ -133,7 +133,7 @@ namespace Intro.WebApi.Services
             user.UserTitle = _userTitleRepository.GetEntityByID(user.UserTitleId);
             user.UserType = _userTypeRepository.GetEntityByID(user.UserTypeId);
 
-            UserDTO userDTO = new UserDTO
+            UserDTO userDTO = new UserDTO 
             {
                 Surname = user.Surname,
                 Name = user.Name,

@@ -9,30 +9,36 @@ import { throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  private baseUrl = '';
   private api = "/api/Users";
-
+  
   constructor(private httpClient:HttpClient,@Inject('WEB_API_URL') webApiUrl: string) { 
-    this.baseUrl = webApiUrl;
+    this.api = webApiUrl + this.api;
+    console.log(`web api: ${this.api}`);
   }
 
   //#region API Methods   
   getAllUsers() : Observable<IUser[]> {
-    return this.httpClient.get<IUser[]>(this. baseUrl+this.api).pipe(
+    return this.httpClient.get<IUser[]>(this.api).pipe(
       catchError(this.handleError)
     );
   }
   
   updateUser(id:number,user:IUser){
-  
+    return this.httpClient.put(this.api,user).pipe(
+      catchError(this.handleError)
+    )
   }
 
   addUser(user:IUser){
-
+    return this.httpClient.post(this.api,user).pipe(
+      catchError(this.handleError)
+    )
   }
   
   deleteUser(id:number){
-    
+    return this.httpClient.delete(this.api).pipe(
+      catchError(this.handleError)
+    )
   }
   //#endregion
 

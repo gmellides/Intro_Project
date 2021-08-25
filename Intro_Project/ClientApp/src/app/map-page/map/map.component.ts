@@ -17,14 +17,9 @@ export class MapComponent implements OnInit {
 
   @ViewChild("mapView", { static:true } ) private map:ElementRef;
 
-  constructor() { 
-  
-  }
+  constructor() {  }
 
-  ngOnInit() {
-    if(this.isMiniMap)
-      console.log("MAPPPPP")
-      
+  ngOnInit() {   
     return loadModules([
       'esri/Map',
       'esri/views/MapView'
@@ -42,7 +37,7 @@ export class MapComponent implements OnInit {
         });
 
 
-        this._view.center.latitude=this.latitude;
+        this._view.center.latitude = this.latitude;
         this._view.center.longitude = this.longitude;
         this._view.zoom = this.zoomLevel;
       })
