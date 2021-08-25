@@ -41,12 +41,12 @@ import { MapPageComponent } from './map-page/map-page.component';
     MatTableModule,
     MatPaginatorModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'users', component:UsersComponent },
-      { path: 'map', component:MapPageComponent }
-    ]),
+    { path: '', component: HomeComponent, pathMatch: 'full' },
+    { path: 'counter', component: CounterComponent },
+    { path: 'fetch-data', component: FetchDataComponent },
+    { path: 'users', component: UsersComponent },
+    { path: 'map', component: MapPageComponent }
+], { relativeLinkResolution: 'legacy' }),
     BrowserAnimationsModule
   ],
   providers: [],
