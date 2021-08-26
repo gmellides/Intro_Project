@@ -1,4 +1,4 @@
-import { Inject, OnInit } from '@angular/core';
+import { OnInit } from '@angular/core';
 import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UserService } from '../user.service';
@@ -9,18 +9,17 @@ import { IUser } from '../users/user.interface';
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit,OnDestroy{
-  private _usersCollection :IUser[];
-  private _userSubscribtion:Subscription;
+  public _usersCollection :IUser[];
+  public _userSubscribtion:Subscription;
 
   constructor(private userService:UserService){}
 
   mapLoadedEvent(status: boolean) {
-
-
     console.log('The map loaded: ' + status);
   }
 
   ngOnInit(): void {
+    
     this._userSubscribtion = this.userService.getAllUsers().subscribe(
       {
         next: x => this._usersCollection = x,

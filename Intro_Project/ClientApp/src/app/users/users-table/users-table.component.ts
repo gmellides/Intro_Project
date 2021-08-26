@@ -11,7 +11,7 @@ import { IUser } from '../user.interface';
   styleUrls: ['./users-table.component.css']
 })
 export class UsersTableComponent implements OnInit {
-  @Input() private isMiniTable = false;
+  @Input() public isMiniTable = false;
   @Input() private users = [];
   private usersDataSource : MatTableDataSource<IUser> = null;
   private _userSubscribtion : Subscription;
