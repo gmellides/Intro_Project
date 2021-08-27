@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/user.service';
 import { IUser } from '../user.interface';
@@ -12,16 +14,19 @@ export class AddUserComponent implements OnInit {
 
   public inputUser: IUser;
   private _userSubscribtion : Subscription;
-
-  constructor(private userService:UserService) { }
+  private addUserFormControl = new FormControl();
+  constructor(private userService:UserService,private dialogRef: MatDialogRef<AddUserComponent>) { }
 
   ngOnInit() {
-    // this._userSubscribtion = this.userService.getAllUsers().subscribe(
-    //   {
-    //     next: x => this._usersCollection = x,
-    //     error: err => console.log("Error occured in User service")
-    //   }
-    // );
+
+  }
+
+  close(){
+    this.dialogRef.close();
+  }
+
+  save(){
+
   }
 
 }
