@@ -18,11 +18,11 @@
     <div class="col">
         <div class="card" style="width: 100%;">
             <div class="card-header">
-                <h4>Users Menu</h4>
+                <h4>Quick Actions</h4>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item"><button class="btn btn-link">Add New User</button> </li>
-                <li class="list-group-item"><button class="btn btn-link">Show All Users</button></li>
+                <li class="list-group-item"><button (click)="openAddUserModal()"  class="btn btn-link">Add New User</button> </li>
+                <li class="list-group-item"><button [routerLink]="['/users']" class="btn btn-link">Show All Users</button></li>
             </ul>
         </div>
     </div>
