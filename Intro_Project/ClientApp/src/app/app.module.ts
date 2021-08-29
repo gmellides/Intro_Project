@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
@@ -21,6 +20,7 @@ import { MapPageComponent } from './map-page/map-page.component';
 import { MatDialogModule } from "@angular/material/dialog";
 import { environment } from 'src/environments/environment';
 import { StoreModule } from '@ngrx/store';
+import { FormsModule } from '@angular/forms';
 // import { mapReducer } from './state/map.reducer';
 
 
@@ -39,8 +39,8 @@ import { StoreModule } from '@ngrx/store';
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
-    FormsModule,
     MatInputModule,
+    FormsModule,
     MatTableModule,
     MatPaginatorModule,
     MatDialogModule,

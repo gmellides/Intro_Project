@@ -3,7 +3,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UserService } from '../user.service';
 import { IUser } from '../users/user.interface';
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { AddUserComponent } from '../users/add-user/add-user.component';
 
 @Component({
@@ -30,18 +30,17 @@ export class HomeComponent implements OnInit,OnDestroy{
     console.log(this._usersCollection);
   }
 
-
   openAddUserModal(){
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.disableClose = true;
     matDialogConfig.autoFocus = true;
     this.dialog.open(AddUserComponent,matDialogConfig)
   }
+
   closeAddUserModal(){
     this.dialog.closeAll();
   }
 
-  
   ngOnDestroy(): void {
     this._userSubscribtion.unsubscribe();
   }

@@ -36,6 +36,10 @@ export class MapComponent implements OnInit {
           map: map
         });
 
+        // Add map click event when component runs in /map page. 
+        if(!this.isMiniMap){
+
+        }
 
         this._view.center.latitude = this.latitude;
         this._view.center.longitude = this.longitude;

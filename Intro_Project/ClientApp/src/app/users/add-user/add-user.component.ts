@@ -12,9 +12,9 @@ import { IUser } from '../user.interface';
 })
 export class AddUserComponent implements OnInit {
 
-  public inputUser: IUser;
+  public userModel: IUser;
   private _userSubscribtion : Subscription;
-  private addUserFormControl = new FormControl();
+
   constructor(private userService:UserService,private dialogRef: MatDialogRef<AddUserComponent>) { }
 
   ngOnInit() {

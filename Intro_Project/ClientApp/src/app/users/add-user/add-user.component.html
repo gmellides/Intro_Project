@@ -12,7 +12,18 @@
           </button>
   </div>
   <div class="modal-body">
-    
+    <form > 
+
+      <div class="form-group col">
+        <label for="firstname">Firstname</label>
+        <input type="text" class="form-control" id="firstname" [(ngModel)]="userModel.Name" name="firstname" >
+      </div>
+
+      <div class="col">
+
+      </div>
+
+    </form>
   </div>
   <div class="modal-footer">
     <button (click)="close()" class="btn btn-primary">Close</button>
