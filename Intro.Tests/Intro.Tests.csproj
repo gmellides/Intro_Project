@@ -13,4 +13,9 @@
     <PackageReference Include="coverlet.collector" Version="3.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Intro.Models\Intro.Models.csproj" />
+    <ProjectReference Include="..\Intro.WebApi\Intro.WebApi.csproj" />
+  </ItemGroup>
+
 </Project>
