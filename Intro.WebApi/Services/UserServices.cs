@@ -15,35 +15,31 @@ namespace Intro.WebApi.Services
         private readonly IRepository<UserTitle> _userTitleRepository;
         private readonly IRepository<UserType> _userTypeRepository;
         private readonly ILogger<UserServices> _logger;
-        private readonly IntroProjectContext _context;
 
         public UserServices(IRepository<UserTitle> userTitleRepository,
-                            IRepository<UserType> userTypeRepository,
-                            IntroProjectContext context)
+                            IRepository<UserType> userTypeRepository)
         {
             _userTitleRepository = userTitleRepository;
             _userTypeRepository = userTypeRepository;
-            _context = context;
         }
              
-        public async Task DeleteUser(int userId)
+        public User DeleteUser(User user)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Id.Equals(userId));
             if (user != null)
             {
                 user.IsActive = false;
-
-                await _context.SaveChangesAsync();
+                return user;
             }
             else
             {
-                _logger.LogInformation($"User Not Found: There is no user with Id {userId}");
+                _logger.LogInformation($"User Not Found: There is no user with Id {user.Id}");
+                return null;
             }
         }
 
-        public async Task EditUserAction(int userId,UserDTO userDTO)
+        public User EditUserAction(User user,UserDTO userDTO)
         {
-            User user = _context.Users.FirstOrDefault(x=>x.Id == userId);
+
             if (user != null)
             {
                 if (user.Name != userDTO.Name)
@@ -67,15 +63,16 @@ namespace Intro.WebApi.Services
                 if (user.UserTitle.Description != userDTO.UserTitle.Description)
                     user.UserTitle.Description = userDTO.UserTitle.Description;
 
-                await _context.SaveChangesAsync();
+                return user;
             }
             else
             {
-                _logger.LogInformation($"Edit User: There is no user with Id {userId}");
+                _logger.LogInformation($"Edit User: There is no user with Id {user.Id}");
+                return null;
             }
         }
 
-        public async Task CreateUserAction(UserDTO userDTO)
+        public User CreateUserEntity(UserDTO userDTO)
         {
             User user = new User
             {
@@ -94,8 +91,7 @@ namespace Intro.WebApi.Services
                 },
                 IsActive = true
             };
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            return user;
         }
 
         public List<UserDTO> MapUserDTO(List<User> users)

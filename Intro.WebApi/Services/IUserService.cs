@@ -10,9 +10,9 @@ namespace Intro.WebApi.Services
 {
     public interface IUserService
     {
-        Task CreateUserAction(UserDTO userDTO);
-        Task EditUserAction(int userId,UserDTO userDTO);
-        Task DeleteUser(int userId);
+        User CreateUserEntity(UserDTO userDTO);
+        User EditUserAction(User userId,UserDTO userDTO);
+        User DeleteUser(User user);
         List<UserDTO> MapUserDTO(List<User> users);
     }
 }

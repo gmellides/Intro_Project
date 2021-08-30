@@ -63,13 +63,16 @@ namespace Intro.WebApi.Controllers
 
             try
             {
-               await _userService.CreateUserAction(userDTO);
+                User user = _userService.CreateUserEntity(userDTO);
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
             }
             catch (Exception e)
             {
                 _logger.LogError($"PostUser - An error occured with message {e.Message} and stackTrace {e.StackTrace}");
                 return StatusCode(500);
             }
+
             return Ok();
         }
         
@@ -88,7 +91,10 @@ namespace Intro.WebApi.Controllers
 
             try
             {
-                await _userService.EditUserAction(userId,userDTO);
+                User user = _context.Users.FirstOrDefault(x => x.Id == userId);
+                user = _userService.EditUserAction(user, userDTO);
+
+                await _context.SaveChangesAsync();
             }
             catch (Exception e)
             {
@@ -104,15 +110,17 @@ namespace Intro.WebApi.Controllers
         /// <param name="userId"></param>
         /// <returns></returns>
         [HttpDelete]
-        public ActionResult DeleteUser([FromQuery] int userId)
+        public async Task<ActionResult> DeleteUser([FromQuery] int userId)
         {
-            try
+            User user = _context.Users.FirstOrDefault(x => x.Id == userId);
+            if (user != null)
             {
-                _userService.DeleteUser(userId).ConfigureAwait(false);
+                user = _userService.DeleteUser(user);
+                await _context.SaveChangesAsync();
             }
-            catch (Exception e)
+            else
             {
-                _logger.LogError($"DeleteUser - Exception occured with message {e.Message}");
+                _logger.LogError($"DeleteUser - user with id {userId} not found.");
                 return StatusCode(400);
             }
             return Ok();
