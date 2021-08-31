@@ -16,3 +16,14 @@ export interface IUser{
     UserTitle:IUserTitle;
     EmailAddress:string;
 }
+
+export interface IUserDTO{
+    Id?:number;
+    Name:string;
+    Surname:string;
+    BirthDate?:Date;
+    UserTypeDescription:string;
+    UserTypeCode:string;
+    UserTitleDescription:string;
+    EmailAddress:string;
+}

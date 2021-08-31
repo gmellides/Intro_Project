@@ -34,7 +34,9 @@ export class HomeComponent implements OnInit,OnDestroy{
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.disableClose = true;
     matDialogConfig.autoFocus = true;
-    this.dialog.open(AddUserComponent,matDialogConfig)
+
+    let addUserDialogRef =  this.dialog.open(AddUserComponent,matDialogConfig);
+    addUserDialogRef.componentInstance.isInEditMode = false;
   }
 
   closeAddUserModal(){

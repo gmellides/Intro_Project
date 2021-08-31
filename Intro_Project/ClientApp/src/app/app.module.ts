@@ -13,14 +13,15 @@ import { MapComponent } from './map-page/map/map.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UsersComponent } from './users/users.component';
 import { UsersTableComponent } from './users/users-table/users-table.component';
-import {MatTableModule} from '@angular/material/table';
-import {MatPaginatorModule} from '@angular/material/paginator';
-import {MatInputModule} from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatInputModule } from '@angular/material/input';
 import { MapPageComponent } from './map-page/map-page.component';
 import { MatDialogModule } from "@angular/material/dialog";
 import { environment } from 'src/environments/environment';
 import { StoreModule } from '@ngrx/store';
 import { FormsModule } from '@angular/forms';
+import { AddUserComponent } from './users/add-user/add-user.component';
 // import { mapReducer } from './state/map.reducer';
 
 
@@ -34,16 +35,15 @@ import { FormsModule } from '@angular/forms';
     MapComponent,
     UsersComponent,
     UsersTableComponent,
-    MapPageComponent
+    MapPageComponent,AddUserComponent
    ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     MatInputModule,
-    FormsModule,
     MatTableModule,
     MatPaginatorModule,
-    MatDialogModule,
+    MatDialogModule,FormsModule,
     StoreDevtoolsModule.instrument({
       name:'Intro_Project Dev Tools',
       maxAge:25,
@@ -53,11 +53,8 @@ import { FormsModule } from '@angular/forms';
     { path: '', component: HomeComponent, pathMatch: 'full' },
     { path: 'users', component: UsersComponent },
     { path: 'map', component: MapPageComponent }
-], { relativeLinkResolution: 'legacy' }),
-    BrowserAnimationsModule,
-    // StoreModule.forFeature('users',usersReducer),
-    // StoreModule.forFeature('map',mapReducer),
-    // StoreModule.forRoot(reducer)
+    ], { relativeLinkResolution: 'legacy' }),
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
