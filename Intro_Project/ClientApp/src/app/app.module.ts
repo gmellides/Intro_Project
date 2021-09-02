@@ -24,7 +24,7 @@ import { FormsModule } from '@angular/forms';
 import { AddUserComponent } from './users/add-user/add-user.component';
 import { userReducer } from './state/users.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { UserDetailsComponent } from './users/user-details/user-details.component';
+import { ViewEditUserDetailsComponent } from './users/view-edit-user-details/view-edit-user-details.component';
 
 @NgModule({
   declarations: [	
@@ -35,7 +35,8 @@ import { UserDetailsComponent } from './users/user-details/user-details.componen
     MapComponent,
     UsersComponent,
     UsersTableComponent,
-    MapPageComponent,AddUserComponent
+    MapPageComponent,
+    AddUserComponent
    ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -56,7 +57,7 @@ import { UserDetailsComponent } from './users/user-details/user-details.componen
     { path: '' , component: HomeComponent, pathMatch: 'full' },
     { path: 'users' , component: UsersComponent },
     { path: 'map' , component: MapPageComponent },
-    { path: 'userDetails/:userId' , component:UserDetailsComponent }
+    { path: 'userDetails/:userId' , component:ViewEditUserDetailsComponent }
     ], { relativeLinkResolution: 'legacy' }),
     BrowserAnimationsModule,
     EffectsModule.forRoot([])

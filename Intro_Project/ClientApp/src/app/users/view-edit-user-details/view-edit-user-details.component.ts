@@ -6,7 +6,7 @@ import { IUser } from '../user.interface';
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.css']
 })
-export class UserDetailsComponent implements OnInit {
+export class ViewEditUserDetailsComponent implements OnInit {
   
   public userDetails:IUser;
   constructor() { }
