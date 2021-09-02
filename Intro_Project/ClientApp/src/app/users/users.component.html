@@ -3,13 +3,21 @@
     <br/>
     <div class="row">
         <div class="col">
-            <button type="button" class="btn btn-outline-secondary">Add New User</button>
+            <h3>Users Menu</h3>
         </div>
         <div class="col">
-            <button type="button" class="btn btn-outline-danger">Delete User</button> 
+            <button type="button" (click)="openAddUserDialog()" class="btn btn-secondary">Add New User</button>
         </div>
     </div>
+    
+    <hr/>
     <div class="row">
-        <!-- <app-users-table [isMiniTable]="false" [users]='_usersCollection'></app-users-table> -->
+        <div class="alert alert-dark" role="alert">
+            Click in user to open user details
+        </div>
+    </div>
+    <br/>
+    <div class="tableView">
+         <app-users-table [isMiniTable]="false" [users]='users'></app-users-table> 
     </div>
 </div>

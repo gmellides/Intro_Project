@@ -1,19 +1,21 @@
-interface IUserTitle{
+export interface IUserTitle{
+    Id?:number;
     Description:string;
 }
 
-interface IUserType{
+export interface IUserType{
+    Id?:number;
     Description:string;
     Code:string;
 }
 
 export interface IUser{
-    Id:number;
+    Id?:number;
     Name:string;
     Surname:string;
     BirthDate?:Date;
-    UserType:IUserType;
-    UserTitle:IUserTitle;
+    UserType?:IUserType;
+    UserTitle?:IUserTitle;
     EmailAddress:string;
 }
 

@@ -1,6 +1,8 @@
 <div class="modal-content">
   <div class="modal-header">
-    <h6 class="circularBold"> {{isInEditMode ? 'Edit User' : 'Add New User'}}</h6>
+    <h6 class="circularBold">
+      {{ isInEditMode ? "Edit User" : "Add New User" }}
+    </h6>
     <button
       type="button"
       class="close"
@@ -12,7 +14,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <form #userForm="ngForm">
+    <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm)">
       <div class="row">
         <div class="form-group col">
           <label for="firstname">Name</label>
@@ -21,6 +23,7 @@
             class="form-control"
             name="firstname"
             [(ngModel)]="userModel.Name"
+            [ngModelOptions]="{ standalone: true }"
             required
           />
         </div>
@@ -56,14 +59,47 @@
           />
         </div>
       </div>
-
+      <hr />
+      <h4>User Type</h4>
       <div class="row">
-
+        <div class="col">
+          <label for="userTypeDescription">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="usertypedescription"
+            [(ngModel)]="userModel.UserType.Description"
+          />
+        </div>
+        <div class="col">
+          <label for="userTypeCode">Code</label>
+          <input
+            type="text"
+            class="form-control"
+            name="userTypeCode"
+            [(ngModel)]="userModel.UserType.Code"
+          />
+        </div>
+      </div>
+      <br />
+      <h4>User Title</h4>
+      <div class="container row">
+        <label for="userTitleDescription">Description</label>
+        <input
+          type="text"
+          name="userTitleDescription"
+          [(ngModel)]="userModel.UserTitle.Description"
+          class="form-control"
+        />
+      </div>
+      <div class="row">
+        
       </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button (click)="close()" class="btn btn-primary">Close</button>
-    <button (click)="save()" class="btn btn-success">Save</button>
+    <button  (click)="close()" class="btn btn-primary">Close</button>
+    <!-- emit Submit event from User Form -->
+    <button (click)="userForm.ngSubmit.emit()" type="submit" class="btn btn-success">Save</button>
   </div>
 </div>

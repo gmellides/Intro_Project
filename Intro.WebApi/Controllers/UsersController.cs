@@ -18,6 +18,8 @@ namespace Intro.WebApi.Controllers
     {
         private readonly ILogger<UsersController> _logger;
         private readonly IRepository<User> _usersRepository;
+        private readonly IRepository<UserTitle> _userTitleRepository;
+        private readonly IRepository<UserType> _userTypeRepository;
         private readonly IUserService _userService;
         private readonly IntroProjectContext _context;
 
@@ -32,10 +34,13 @@ namespace Intro.WebApi.Controllers
             _usersRepository = usersRepository;
             _context = context;
             _userService = userService;
+            _userTitleRepository = userTitleRepository;
+            _userTypeRepository = userTypeRepository;
         }
 
         /// <summary>
-        /// 
+        /// Retrieve all registered users
+        /// METHOD: GET
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -44,6 +49,16 @@ namespace Intro.WebApi.Controllers
             List<UserDTO> users = _userService.MapUserDTO(_usersRepository.GetAll());
 
             return Ok(users);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<UserDTO>> GetSpecificUser([FromRoute] int userId)
+        {
+            User usr = _usersRepository.GetEntityByID(userId);
+            UserTitle userTitle = _userTitleRepository.GetEntityByID(usr.UserTitleId);
+            UserType userType = _userTypeRepository.GetEntityByID(usr.UserTypeId);
+
+            return Ok();
         }
 
         /// <summary>
@@ -77,18 +92,12 @@ namespace Intro.WebApi.Controllers
         }
         
         /// <summary>
-        /// 
+        /// Edit User 
         /// </summary>
         /// <param name="userId"></param>
         [HttpPut]
         public async Task<ActionResult> PutUser([FromQuery] int userId,UserDTO userDTO)
         {
-            if (ValidateUserDTO(userDTO))
-            {
-                _logger.LogError($"PutUser - Invalid Input error");
-                return StatusCode(400);
-            }
-
             try
             {
                 User user = _context.Users.FirstOrDefault(x => x.Id == userId);

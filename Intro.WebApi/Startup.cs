@@ -20,6 +20,8 @@ namespace Intro.WebApi
 {
     public class Startup
     {
+        private const string CORS_POLICY_NAME = "allowAllPolicy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -33,16 +35,14 @@ namespace Intro.WebApi
             services.AddCors(
                 options =>
                 {
-                    options.AddPolicy("customPolicy",
+                    options.AddPolicy(CORS_POLICY_NAME,
                                       builder =>
                                       {
-                                          builder.WithOrigins("http://localhost:4200",
-                                                              "http://localhost:51317")
-                                                              .AllowAnyHeader()
-                                                              .AllowAnyMethod();
+                                          builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                                       });
                 }
             );
+
             services.AddScoped<IRepository<User>, UserRepository>();
             services.AddScoped<IRepository<UserTitle>, UserTitleRepository>();
             services.AddScoped<IRepository<UserType>, UserTypeRepository>();
@@ -64,7 +64,7 @@ namespace Intro.WebApi
 
             app.UseRouting();
 
-            app.UseCors(); // Use Cors
+            app.UseCors(CORS_POLICY_NAME); // Use Cors
 
             app.UseAuthorization();
 

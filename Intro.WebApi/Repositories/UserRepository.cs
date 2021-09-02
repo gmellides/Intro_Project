@@ -9,6 +9,7 @@ namespace Intro.WebApi.Repositories
     public class UserRepository : IRepository<User>
     {
         IntroProjectContext _context;
+
         public UserRepository(IntroProjectContext context)
         {
             _context = context;

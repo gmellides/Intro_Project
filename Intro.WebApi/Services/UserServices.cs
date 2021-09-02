@@ -54,14 +54,14 @@ namespace Intro.WebApi.Services
                 if (user.EmailAddress != userDTO.EmailAddress)
                     user.EmailAddress = userDTO.EmailAddress;
 
-                if (user.UserType.Code != userDTO.UserType.Code)
-                    user.UserType.Code = userDTO.UserType.Code;
+                if (user.UserType.Code != userDTO.UserTypeCode)
+                    user.UserType.Code = userDTO.UserTypeCode;
 
-                if (user.UserType.Description != userDTO.UserType.Description)
-                    user.UserType.Description = userDTO.UserType.Description;
+                if (user.UserType.Description != userDTO.UserTypeDescription)
+                    user.UserType.Description = userDTO.UserTypeDescription;
 
-                if (user.UserTitle.Description != userDTO.UserTitle.Description)
-                    user.UserTitle.Description = userDTO.UserTitle.Description;
+                if (user.UserTitle.Description != userDTO.UserTitleDescription)
+                    user.UserTitle.Description = userDTO.UserTitleDescription;
 
                 return user;
             }
@@ -72,6 +72,11 @@ namespace Intro.WebApi.Services
             }
         }
 
+        /// <summary>
+        /// Creates the user entity.
+        /// </summary>
+        /// <param name="userDTO">A user dto.</param>
+        /// <returns>A User Entity based on User DTO.</returns>
         public User CreateUserEntity(UserDTO userDTO)
         {
             User user = new User
@@ -82,17 +87,19 @@ namespace Intro.WebApi.Services
                 EmailAddress = userDTO.EmailAddress,
                 UserType = new UserType
                 {
-                    Code = userDTO.UserType.Code,
-                    Description = userDTO.UserType.Description
+                    Code = userDTO.UserTypeCode,
+                    Description = userDTO.UserTypeDescription
                 },
                 UserTitle = new UserTitle
                 {
-                    Description = userDTO.UserTitle.Description
+                    Description = userDTO.UserTitleDescription
                 },
                 IsActive = true
             };
             return user;
         }
+        
+       
 
         public List<UserDTO> MapUserDTO(List<User> users)
         {
@@ -109,15 +116,9 @@ namespace Intro.WebApi.Services
                     BirthDate = user.BirthDate,
                     EmailAddress = user.EmailAddress,
                     Id = user.Id,
-                    UserTitle = new UserTitleDTO
-                    {
-                        Description = user.UserTitle.Description
-                    },
-                    UserType = new UsertTypeDTO
-                    {
-                        Code = user.UserType.Code,
-                        Description = user.UserType.Description
-                    }
+                    UserTitleDescription = user.UserTitle.Description,
+                    UserTypeCode = user.UserType.Code,
+                    UserTypeDescription = user.UserType.Description
                 });
             }
             return userDTOs;
@@ -136,15 +137,9 @@ namespace Intro.WebApi.Services
                 BirthDate = user.BirthDate,
                 EmailAddress = user.EmailAddress,
                 Id = user.Id,
-                UserTitle = new UserTitleDTO
-                {
-                    Description = user.UserTitle.Description
-                },
-                UserType = new UsertTypeDTO
-                {
-                    Code = user.UserType.Code,
-                    Description = user.UserType.Description
-                }
+                UserTitleDescription = user.UserTitle.Description,
+                UserTypeCode = user.UserType.Code,
+                UserTypeDescription = user.UserType.Description
             };
 
             return userDTO;

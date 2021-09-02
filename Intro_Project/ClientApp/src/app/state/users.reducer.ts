@@ -1,16 +1,33 @@
 import {createReducer,on,Action} from '@ngrx/store';
-import { addUserAction } from './users.actions';
+import { IUser } from '../users/user.interface';
+import { addUserAction, getRegisteredUsers } from './users.actions';
 
 /**
  * User Reducer.
  */
+export interface UserState{
+    users:IUser[],
+    isLoading:boolean
+}
 
- export const userReducer = createReducer(
-    {},
-    on(addUserAction,state=>{
+export const usersInitialState :UserState = {
+    users:[],
+    isLoading:false
+}
+
+export const userReducer = createReducer(
+    usersInitialState,
+    on(getRegisteredUsers, (state,action)=>{
+        console.log("assaas");
         return{
             ...state,
-            // something
+            action
         }
-    })
-)
+    }),
+    on(addUserAction,(state=>{
+        // api call 
+        return {
+            ...state
+        }
+    }))
+);

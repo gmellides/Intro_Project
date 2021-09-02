@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { IUser } from './users/user.interface';
+import { IUser as IUserDTO } from './users/user.interface';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
@@ -17,26 +17,32 @@ export class UserService {
   }
 
   //#region API Methods   
-  getAllUsers() : Observable<IUser[]> {
-    return this.httpClient.get<IUser[]>(this.api).pipe(
+  getAllUsers() : Observable<IUserDTO[]> {
+    return this.httpClient.get<IUserDTO[]>(this.api).pipe(
       catchError(this.handleError)
     );
   }
+
+  getUserDetails(id:number):Observable<IUserDTO>{
+    return this.httpClient.get<IUserDTO>(this.api+`?userId=${id}`).pipe(
+      catchError(this.handleError)
+    )
+  }
   
-  updateUser(id:number,user:IUser){
+  updateUser(id:number,user:IUserDTO){
     return this.httpClient.put(this.api,user).pipe(
       catchError(this.handleError)
     )
   }
 
-  addUser(user:IUser){
-    return this.httpClient.post(this.api,user).pipe(
+  addUser(user:IUserDTO){
+    return this.httpClient.post<IUserDTO>(this.api,user).pipe(
       catchError(this.handleError)
     )
   }
   
   deleteUser(id:number){
-    return this.httpClient.delete(this.api).pipe(
+    return this.httpClient.delete(this.api+`?userId=${id}`).pipe(
       catchError(this.handleError)
     )
   }

@@ -22,8 +22,6 @@ namespace Intro.Tests
             _userService = new UserServices(_userTitleRepository.Object, _userTypeRepository.Object);
         }
 
-
-
         [TestMethod]
         public void AssertUserIsDeleted_Success()
         {
@@ -87,15 +85,9 @@ namespace Intro.Tests
                 Surname = "Doe",
                 BirthDate = System.DateTime.Now,
                 EmailAddress = "test@mail.gr",
-                UserTitle = new UserTitleDTO
-                {
-                    Description = "Title Description",
-                },
-                UserType = new UsertTypeDTO
-                {
-                    Description = "Type Description",
-                    Code = "TS"
-                },
+                UserTitleDescription = "Title Description",
+                UserTypeDescription = "Type Description",
+                UserTypeCode = "TS"
             };
             #endregion
 
