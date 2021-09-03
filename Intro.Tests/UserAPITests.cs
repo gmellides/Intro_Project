@@ -14,6 +14,9 @@ namespace Intro.Tests
         public Mock<IRepository<UserTitle>> _userTitleRepository;
         public Mock<IRepository<UserType>> _userTypeRepository;
 
+        /// <summary>
+        /// Setups Test instance.
+        /// </summary>
         [TestInitialize]
         public void Setup()
         {
@@ -22,6 +25,10 @@ namespace Intro.Tests
             _userService = new UserServices(_userTitleRepository.Object, _userTypeRepository.Object);
         }
 
+        /// <summary>
+        /// Test Delete user method from service.
+        /// Delete method must change isActive value to false.
+        /// </summary>
         [TestMethod]
         public void AssertUserIsDeleted_Success()
         {
@@ -53,6 +60,34 @@ namespace Intro.Tests
             Assert.AreEqual(user.IsActive, false);
         }
 
+        /// <summary>
+        /// Tests Create user entity method from service.
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void TestAddUser_AssertSuccess()
+        {
+            UserDTO dto = new UserDTO
+            {
+                Name = "John",
+                Surname = "Doe",
+                BirthDate = System.DateTime.Now,
+                EmailAddress = "test@mail.gr",
+                UserTitleDescription = "Title Description",
+                UserTypeDescription = "Type Description",
+                UserTypeCode = "TS"
+            };
+
+            User user = _userService.CreateUserEntity(dto);
+
+            Assert.AreEqual(dto.Name,user.Name);
+            Assert.AreEqual(dto.UserTitleDescription, user.UserTitle.Description);
+            Assert.AreEqual(user.IsActive,true);
+        }
+
+        /// <summary>
+        /// Tests edit user entity method from service.
+        /// </summary>
         [TestMethod]
         public void TestEditUser_assertSuccess()
         {

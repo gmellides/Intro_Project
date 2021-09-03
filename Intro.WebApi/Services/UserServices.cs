@@ -22,7 +22,12 @@ namespace Intro.WebApi.Services
             _userTitleRepository = userTitleRepository;
             _userTypeRepository = userTypeRepository;
         }
-             
+
+        /// <summary>
+        /// Deletes user. this method will set isActive to false
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <returns></returns>
         public User DeleteUser(User user)
         {
             if (user != null)
@@ -37,6 +42,12 @@ namespace Intro.WebApi.Services
             }
         }
 
+        /// <summary>
+        /// Edits the user action. 
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <param name="userDTO">The user dto.</param>
+        /// <returns></returns>
         public User EditUserAction(User user,UserDTO userDTO)
         {
 
@@ -98,9 +109,12 @@ namespace Intro.WebApi.Services
             };
             return user;
         }
-        
-       
 
+        /// <summary>
+        /// Maps the user dto.
+        /// </summary>
+        /// <param name="users">List of user entities</param>
+        /// <returns>List of user DTOs</returns>
         public List<UserDTO> MapUserDTO(List<User> users)
         {
             List<UserDTO> userDTOs = new List<UserDTO>();
@@ -111,11 +125,11 @@ namespace Intro.WebApi.Services
             {
                 userDTOs.Add(new UserDTO
                 {
+                    Id = user.Id,
                     Surname = user.Surname,
                     Name = user.Name,
                     BirthDate = user.BirthDate,
                     EmailAddress = user.EmailAddress,
-                    Id = user.Id,
                     UserTitleDescription = user.UserTitle.Description,
                     UserTypeCode = user.UserType.Code,
                     UserTypeDescription = user.UserType.Description
@@ -123,20 +137,23 @@ namespace Intro.WebApi.Services
             }
             return userDTOs;
         }
-
+        /// <summary>
+        /// Maps the user dto.
+        /// </summary>
+        /// <param name="user">User Entity.</param>
+        /// <returns>UserDTO</returns>
         public UserDTO MapUserDTO(User user)
         {
             // Link User Title and type
             user.UserTitle = _userTitleRepository.GetEntityByID(user.UserTitleId);
             user.UserType = _userTypeRepository.GetEntityByID(user.UserTypeId);
-
             UserDTO userDTO = new UserDTO 
             {
+                Id = user.Id,
                 Surname = user.Surname,
                 Name = user.Name,
                 BirthDate = user.BirthDate,
                 EmailAddress = user.EmailAddress,
-                Id = user.Id,
                 UserTitleDescription = user.UserTitle.Description,
                 UserTypeCode = user.UserType.Code,
                 UserTypeDescription = user.UserType.Description

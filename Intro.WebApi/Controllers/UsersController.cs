@@ -3,6 +3,7 @@ using Intro.Models.Model;
 using Intro.WebApi.Repositories;
 using Intro.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -39,43 +40,25 @@ namespace Intro.WebApi.Controllers
         }
 
         /// <summary>
-        /// Retrieve all registered users
+        /// Get all Active registered users
         /// METHOD: GET
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<UserDTO>>> GetAllUsers()
         {
-            List<UserDTO> users = _userService.MapUserDTO(_usersRepository.GetAll());
-
+            var x = _usersRepository.GetAll().Where(x => x.IsActive == true).ToList();
+            List<UserDTO> users = _userService.MapUserDTO(x);
             return Ok(users);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<UserDTO>> GetSpecificUser([FromRoute] int userId)
-        {
-            User usr = _usersRepository.GetEntityByID(userId);
-            UserTitle userTitle = _userTitleRepository.GetEntityByID(usr.UserTitleId);
-            UserType userType = _userTypeRepository.GetEntityByID(usr.UserTypeId);
-
-            return Ok();
         }
 
         /// <summary>
         /// Users controller Post action 
-        /// End Point: POST https://localhost:44362/api/Users
-        /// This method will check the user input and it will save a user in database.
         /// </summary>
         /// <param name="userDTO">User information that needs to be added.</param>
         [HttpPost]
         public async Task<ActionResult> PostUser(UserDTO userDTO)
         {
-            if (ValidateUserDTO(userDTO))
-            {
-                _logger.LogError($"PostUser - Invalid Input error");
-                return StatusCode(400);
-            }
-
             try
             {
                 User user = _userService.CreateUserEntity(userDTO);
@@ -93,14 +76,16 @@ namespace Intro.WebApi.Controllers
         
         /// <summary>
         /// Edit User 
+        /// Method:PUT
         /// </summary>
         /// <param name="userId"></param>
         [HttpPut]
-        public async Task<ActionResult> PutUser([FromQuery] int userId,UserDTO userDTO)
+        public async Task<ActionResult> PutUser(UserDTO userDTO)
         {
             try
             {
-                User user = _context.Users.FirstOrDefault(x => x.Id == userId);
+                User user = _context.Users.Include(x=>x.UserTitle).Include(x=>x.UserType).FirstOrDefault(x => x.Id == userDTO.Id);
+
                 user = _userService.EditUserAction(user, userDTO);
 
                 await _context.SaveChangesAsync();
@@ -114,9 +99,10 @@ namespace Intro.WebApi.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Sets isActive to false.
+        /// Method:DELETE
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="userId">user id From querystring</param>
         /// <returns></returns>
         [HttpDelete]
         public async Task<ActionResult> DeleteUser([FromQuery] int userId)
@@ -135,33 +121,5 @@ namespace Intro.WebApi.Controllers
             return Ok();
         }
 
-        #region Private Helpers        
-        /// <summary>
-        /// Validates the user dto.
-        /// </summary>
-        /// <param name="userDTO">The user dto.</param>
-        /// <returns>TRUE if input is Valid and FALSE if input is Invalid</returns>
-        private bool ValidateUserDTO(UserDTO userDTO)
-        {
-            #region Check for null properties
-            foreach(PropertyInfo info in userDTO.GetType().GetProperties())
-            {
-                if(info.Name != "BirthDate")
-                {
-
-                }
-            }
-            #endregion
-            
-            if (userDTO.Name.Any(char.IsDigit) || string.IsNullOrWhiteSpace(userDTO.Name) ||
-                userDTO.Surname.Any(char.IsDigit) || string.IsNullOrWhiteSpace(userDTO.Surname) ||
-                string.IsNullOrWhiteSpace(userDTO.EmailAddress) )
-                return false;
-           
-
-            return true;
-        }
-
-        #endregion
     }
 }

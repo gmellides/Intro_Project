@@ -14,5 +14,6 @@ namespace Intro.WebApi.Services
         User EditUserAction(User userId,UserDTO userDTO);
         User DeleteUser(User user);
         List<UserDTO> MapUserDTO(List<User> users);
+        UserDTO MapUserDTO(User user);
     }
 }
