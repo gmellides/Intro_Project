@@ -9,7 +9,8 @@ export function getBaseUrl() {
 }
 
 const providers = [
-  { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] }
+  { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] }, 
+  { provide: 'WEB_API_URL', useValue:environment.webApiUrl }
 ];
 
 if (environment.production) {
@@ -18,3 +19,5 @@ if (environment.production) {
 
 platformBrowserDynamic(providers).bootstrapModule(AppModule)
   .catch(err => console.log(err));
+
+// export { renderModule, renderModuleFactory } from '@angular/platform-server';

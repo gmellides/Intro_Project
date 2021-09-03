@@ -1,0 +1,145 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h6 class="circularBold">
+      Add New User
+    </h6>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      data-dismiss="modal"
+      (click)="close()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm)">
+      <div class="row">
+        <div class="form-group col">
+          <label for="firstname">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="firstname"
+            #firstname="ngModel"
+            [(ngModel)]="userModel.name"
+            required
+          />
+       
+          <div *ngIf="!firstname?.valid && (firstname?.dirty || firstname?.touched)">
+            <div class="text-danger">
+              Name is required. 
+            </div>
+         </div>
+        </div>
+        <div class="form-group col">
+          <label for="surname">Surname</label>
+          <input
+            type="text"
+            class="form-control"
+            name="surname"
+            #surename="ngModel"
+            [(ngModel)]="userModel.surname"
+            required
+          />
+          <div *ngIf="!surename?.valid && (surename?.dirty || surename?.touched)">
+            <div class="text-danger">
+              Surename is required. 
+            </div>
+         </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col">
+          <label for="birthdate">Birthday</label>
+          <input
+            type="date"
+            class="form-control"
+            name="birthdate"
+            [(ngModel)]="userModel.BirthDate"
+          />
+        </div>
+        <div class="form-group col">
+          <label for="mail">Mail Address</label>
+          <input
+            type="text"
+            class="form-control"
+            name="mail"
+            #mailAddress="ngModel"
+            email
+            [(ngModel)]="userModel.EmailAddress"
+            required
+          />
+          <div *ngIf="!mailAddress?.valid && (mailAddress?.dirty || mailAddress?.touched)">
+            <div class="text-danger">
+              Email Address is required. Example: test@test.com
+            </div>
+         </div>
+        </div>
+      </div>
+      <hr />
+      <h4>User Type</h4>
+      <div class="row">
+        <div class="col">
+          <label for="userTypeDescription">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="usertypedescription"
+            #usertypedescription="ngModel"
+            [(ngModel)]="userModel.UserTypeDescription"
+            required
+          />
+          <div *ngIf="!usertypedescription?.valid && (usertypedescription?.dirty || usertypedescription?.touched)">
+            <div class="text-danger">
+              User Type Description is required.
+            </div>
+         </div>
+        </div>
+        <div class="col">
+          <label for="userTypeCode">Code</label>
+          <input
+            type="text"
+            class="form-control"
+            name="userTypeCode"
+            #userTypeCode="ngModel"
+            [(ngModel)]="userModel.UserTypeCode"
+            minlength="2"
+            maxlength="2"
+            required
+          />
+          <div *ngIf="!userTypeCode?.valid && (userTypeCode?.dirty || userTypeCode?.touched)">
+            <div class="text-danger">
+              User Type Code is required. Max Lenght is 2 characters. Example: AB
+            </div>
+         </div>
+        </div>
+      </div>
+      <br />
+      <h4>User Title</h4>
+      <div class="container row">
+        <label for="userTitleDescription">Description</label>
+        <input
+          type="text"
+          name="userTitleDescription"
+          #userTitleDescription = "ngModel"
+          [(ngModel)]="userModel.UserTitleDescription"
+          class="form-control"
+          required
+        />
+        <div *ngIf="!userTitleDescription?.valid && (userTitleDescription?.dirty || userTitleDescription?.touched)">
+          <div class="text-danger">
+            User title description is required.
+          </div>
+       </div>
+      </div>
+
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button  (click)="close()" class="btn btn-primary">Close</button>
+    <!-- emit Submit event from User Form -->
+    <button (click)="userForm.ngSubmit.emit()" [disabled]="!userForm.valid" type="submit" class="btn btn-success">Save</button>
+  </div>
+</div>
