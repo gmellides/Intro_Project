@@ -1,0 +1,23 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h6 class="circularBold">
+      <p>{{ modalTitle }}</p>
+    </h6>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      data-dismiss="modal"
+      (click)="answerNoAction()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>{{modalQuestion}}</p>
+  </div>
+  <div class="modal-footer">
+    <button (click)="answerNoAction()" class="btn btn-danger">No</button>
+    <button (click)="answerYesAction()" class="btn btn-success">Yes</button>
+  </div>
+</div>

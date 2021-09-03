@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { IUser as IUserDTO } from './users/user.interface';
+import { IUserDTO } from './users/user.interface';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
@@ -13,7 +13,6 @@ export class UserService {
   
   constructor(private httpClient:HttpClient,@Inject('WEB_API_URL') webApiUrl: string) { 
     this.api = webApiUrl + this.api;
-    console.log(`web api: ${this.api}`);
   }
 
   //#region API Methods   
@@ -22,14 +21,8 @@ export class UserService {
       catchError(this.handleError)
     );
   }
-
-  getUserDetails(id:number):Observable<IUserDTO>{
-    return this.httpClient.get<IUserDTO>(this.api+`?userId=${id}`).pipe(
-      catchError(this.handleError)
-    )
-  }
   
-  updateUser(id:number,user:IUserDTO){
+  updateUser(user:IUserDTO){
     return this.httpClient.put(this.api,user).pipe(
       catchError(this.handleError)
     )

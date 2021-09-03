@@ -1,113 +1,210 @@
-<div *ngIf="isEditMode; then editTemplate else viewTemplate"></div>
+<h2>{{ isEditMode ? "Edit User" : "User Details" }}</h2>
 
+<div class="container">
 
-<h2>{{isEditMode ? "Edit User" : "Add New User" }}</h2>
+  <div class="btn-toolbar  float-right">
+    <button class="btn btn-danger  mr-3" (click)="deleteUser()">Delete User</button>
+    <button class="btn btn-primary  mr-3" (click)="toogleEditMode()">
+      {{ isEditMode ? "User Details" : "Edit User Details" }}
+    </button>
+    <button class="btn btn-secondary mr-3" (click)="closeUserDetails()">
+      Close User
+    </button>
+  </div>
+
+  <br /><br />
+  <hr/>
+
+  <div class="row">
+    <div *ngIf="isEditMode; then editTemplate; else viewTemplate"></div>
+  </div>
+
+</div>
 
 <ng-template #viewTemplate>
   <div class="container">
-    <h2>User Details</h2>
     <div class="row">
-      <div class="col"><button class="btn btn-danger">Delete User</button></div>
-      <div class="col"><button class="btn btn-primary">Edit User</button></div>
-      <div class="col"><button class="btn btn-danger">Close User</button></div>
-    </div>  
-    <div class="row">
-      <div class="row">
-        <div class="col">
-          <p>Name:{{userDetails.Name}}</p>
-        </div>
-        <div class="col">
-          <p>SurName:{{userDetails.Surname}}</p>
-        </div>
+      <div class="col">
+        <h5>Name:{{ userDetails.name }}</h5>
       </div>
-      <div class="row">
-        <div class="col">
-          <p>Birthdate:{{userDetails.BirthDate}}</p>
-        </div>
-        <div class="col">
-          <p>E-mail:{{userDetails.EmailAddress}}</p>
-        </div>
+      <div class="col">
+        <h5>Surname:{{ userDetails.surname }}</h5>
       </div>
     </div>
-    <div class="col">
-      <!-- Card -->
-      <div class="card" style="width: 100%;">
-        <div class="card-header">
-            <h4>User Type</h4>
-        </div>
-        <div class="row">
-          <!-- <h4>Code:{{userDetails.UserTypeCode}}</h4> -->
-        </div>
-        <div class="row">
-          <!-- <h4>Description:{{userDetails.UserTypeDescription}}</h4> -->
-        </div>
+
+    <div class="row">
+      <div class="col">
+        <h5>Birthdate:{{ userDetails.birthDate | date:'dd/MM/yyyy'}}</h5>
+      </div>
+      <div class="col">
+        <h5>E-mail:{{ userDetails.emailAddress }}</h5>
       </div>
     </div>
-    <div class="col">
-      <!-- Card -->
-      <div class="card" style="width: 100%;">
-        <div class="card-header">
-            <h4>User Title</h4>
-        </div>
-        <div class="row">
-          <!-- <h4>Description:{{userDetails.}}</h4> -->
-        </div>
+
+    <div class="card detailsCard" style="width: 18rem">
+      <div class="card-header">
+        <h4>User Type</h4>
+      </div>
+      <div class="card-body">
+        <h4>Code: {{ userDetails.userTypeCode }}</h4>
+        <br />
+        <h4>Description: {{ userDetails.userTypeDescription }}</h4>
+      </div>
+    </div>
+
+    <br />
+    <div class="card detailsCard" style="width: 18rem">
+      <div class="card-header">
+        <h4>User Title</h4>
+      </div>
+      <div class="card-body">
+        <h4>Description:{{ userDetails.userTitleDescription }}</h4>
       </div>
     </div>
   </div>
-  
 </ng-template>
+
 <ng-template #editTemplate>
   <div class="container">
-    <h2>Edit User Details</h2>
-    <div class="row">
-      <div class="col"><button class="btn btn-danger">Delete User</button></div>
-      <div class="col"><button class="btn btn-primary">Edit User</button></div>
-      <div class="col"><button class="btn btn-danger">Close User</button></div>
-    </div>  
-    <div class="row">
+    <form #editUserForm="ngForm" >
       <div class="row">
-        <div class="col">
-          <p>Name:{{userDetails.Name}}</p>
+        
+        <div class="form-group col">
+          <label for="firstname">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="firstname"
+            #firstname="ngModel"
+            [(ngModel)]="userDetails.name"
+            required
+          />
+          <div *ngIf="!firstname?.valid && (firstname?.dirty || firstname?.touched)">
+            <div class="text-danger">
+              Name is required. 
+            </div>
+         </div>
+
         </div>
+
         <div class="col">
-          <p>SurName:{{userDetails.Surname}}</p>
+          <label for="surname">Surname</label>
+          <input
+            type="text"
+            class="form-control"
+            name="surname"
+            #surename="ngModel"
+            [(ngModel)]="userDetails.surname"
+            required
+          />
+
+          <div *ngIf="!surename?.valid && (surename?.dirty || surename?.touched)">
+            <div class="text-danger">
+              Surename is required. 
+            </div>
+         </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col">
-          <p>Birthdate:{{userDetails.BirthDate}}</p>
-        </div>
-        <div class="col">
-          <p>E-mail:{{userDetails.EmailAddress}}</p>
-        </div>
+    
+
+    <div class="row">
+      <div class="form-group col">
+        <label for="birthdate">Birthday</label>
+        <input
+          type="date"
+          class="form-control"
+          name="birthdate"
+          [ngModel]="userDetails.birthDate | date:'yyyy-MM-dd'"
+          (ngModelChange) = "userDetails.birthDate= $event"
+        />
+      </div>
+
+      <div class="form-group col">
+        <label for="mail">Mail Address</label>
+        <input
+          type="text"
+          class="form-control"
+          email
+          name="mail"
+          #mailAddress="ngModel"
+          [(ngModel)]="userDetails.emailAddress"
+          required
+        />
+        <div *ngIf="!mailAddress?.valid && (mailAddress?.dirty || mailAddress?.touched)">
+          <div class="text-danger">
+            Email Address is required. Example: test@test.com
+          </div>
+       </div>
       </div>
     </div>
-    <div class="col">
-      <!-- Card -->
-      <div class="card" style="width: 100%;">
-        <div class="card-header">
-            <h4>User Type</h4>
-        </div>
-        <div class="row">
-          <!-- <h4>Code:{{userDetails.UserTypeCode}}</h4> -->
-        </div>
-        <div class="row">
-          <!-- <h4>Description:{{userDetails.UserTypeDescription}}</h4> -->
-        </div>
+
+    <div class="card detailsCard" style="width: 18rem">
+      <div class="card-header">
+        <h4>User Type</h4>
+      </div>
+      <div class="card-body">
+        <label for="userTypeDescription">Description</label>
+        <input
+          type="text"
+          class="form-control"
+          name="usertypedescription"
+          #usertypedescription="ngModel"
+          [(ngModel)]="userDetails.userTypeDescription"
+        />
+        <div *ngIf="!usertypedescription?.valid && (usertypedescription?.dirty || usertypedescription?.touched)">
+          <div class="text-danger">
+            User Type Description is required.
+          </div>
+       </div>
+        <br />
+        <label for="userTypeCode">Code</label>
+        <input
+          type="text"
+          class="form-control"
+          name="userTypeCode"
+          #userTypeCode="ngModel"
+          minlength="2"
+          maxlength="2"
+          [(ngModel)]="userDetails.userTypeCode"
+        />
+        <div *ngIf="!userTypeCode?.valid && (userTypeCode?.dirty || userTypeCode?.touched)">
+          <div class="text-danger">
+            User Type Code is required. Max Lenght is 2 characters. Example: AB
+          </div>
+       </div>
       </div>
     </div>
-    <div class="col">
-      <!-- Card -->
-      <div class="card" style="width: 100%;">
-        <div class="card-header">
-            <h4>User Title</h4>
-        </div>
-        <div class="row">
-          <!-- <h4>Description:{{userDetails.}}</h4> -->
-        </div>
+
+    <br />
+    <div class="card detailsCard" style="width: 18rem">
+      <div class="card-header">
+        <h4>User Title</h4>
+      </div>
+      <div class="card-body">
+        <label for="userTitleDescription">Description</label>
+        <input
+          type="text"
+          name="userTitleDescription"
+          #userTitleDescription = "ngModel"
+          [(ngModel)]="userDetails.userTitleDescription"
+          class="form-control"
+          required
+        />
+        <div *ngIf="!userTitleDescription?.valid && (userTitleDescription?.dirty || userTitleDescription?.touched)">
+          <div class="text-danger">
+            User title description is required.
+          </div>
+       </div>
       </div>
     </div>
+  </form>
+    <hr />
+    
+    <button (click)="updateUser()" class="btn btn-success float-right">
+      Save
+    </button>
+    <button (click)="toogleEditMode()" class="btn btn-secondary  mr-3 float-right">
+      Cancel
+    </button>
   </div>
-  
 </ng-template>

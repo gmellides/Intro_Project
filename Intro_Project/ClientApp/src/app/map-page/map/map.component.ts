@@ -11,7 +11,6 @@ export class MapComponent implements OnInit {
   @Input() public latitude:number;
   @Input() public longitude:number;
   @Input() public zoomLevel:number; 
-  @Input() public isMiniMap:boolean;
 
   private _view: esri.MapView = null;
 
@@ -35,11 +34,6 @@ export class MapComponent implements OnInit {
           zoom: this.zoomLevel,
           map: map
         });
-
-        // Add map click event when component runs in /map page. 
-        if(!this.isMiniMap){
-
-        }
 
         this._view.center.latitude = this.latitude;
         this._view.center.longitude = this.longitude;

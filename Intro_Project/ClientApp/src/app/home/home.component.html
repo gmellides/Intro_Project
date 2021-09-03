@@ -11,7 +11,7 @@
         </ng-template>
 
         <ng-template #usersMiniTable>
-            <app-users-table [isMiniTable]="true" [users]='_usersCollection'></app-users-table>
+            <app-users-table [users]='_usersCollection'></app-users-table>
         </ng-template>
 
     </div>
@@ -32,9 +32,9 @@
 
 <div class="row">
     <div class="col"><h4>Map</h4></div>
-    <div class="col justify-content-end"><button class="btn btn-link" [routerLink]="['/map']" >OPEN</button></div>
+    <div class="col"><button class="btn btn-link float-right" [routerLink]="['/map']" >Open Map page</button></div>
 </div>
 <br>
 <div class="mapContainer">
-    <app-map isMiniMap="true" [latitude]='35.898819' [longitude]="14.513474" [zoomLevel]="15"> </app-map>
+    <app-map [latitude]='35.898819' [longitude]="14.513474" [zoomLevel]="15"> </app-map>
 </div>
