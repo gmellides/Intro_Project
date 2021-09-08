@@ -33,6 +33,7 @@ namespace Intro.Tests
         public void AssertUserIsDeleted_Success()
         {
             #region Create User Entity
+            // TODO regions within methods should be avoided
             User user = new User
             {
                 Id = 1,
@@ -52,7 +53,7 @@ namespace Intro.Tests
                     Code = "TS"
                 },
                 IsActive = true
-            }; 
+            };
             #endregion
 
             user = _userService.DeleteUser(user);
@@ -62,7 +63,7 @@ namespace Intro.Tests
 
         /// <summary>
         /// Tests Create user entity method from service.
-        /// 
+        ///
         /// </summary>
         [TestMethod]
         public void TestAddUser_AssertSuccess()

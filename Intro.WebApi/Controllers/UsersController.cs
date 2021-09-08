@@ -18,7 +18,9 @@ namespace Intro.WebApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ILogger<UsersController> _logger;
+        // TODO controllers should only know of services and services should know of repositories. Repositories should know of context
         private readonly IRepository<User> _usersRepository;
+        // TODO unused repositories
         private readonly IRepository<UserTitle> _userTitleRepository;
         private readonly IRepository<UserType> _userTypeRepository;
         private readonly IUserService _userService;
@@ -31,7 +33,8 @@ namespace Intro.WebApi.Controllers
                                IUserService userService,
                                IntroProjectContext context)
         {
-            _logger = logger;
+            // TODO argument checks
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _usersRepository = usersRepository;
             _context = context;
             _userService = userService;
@@ -47,13 +50,16 @@ namespace Intro.WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<List<UserDTO>>> GetAllUsers()
         {
+            // TODO one reason we want three layers is to not have the controller do any logic.
+            // TODO fetching all users in memory just to filter them is not efficient this filtering should be done in repository
             var x = _usersRepository.GetAll().Where(x => x.IsActive == true).ToList();
+            // TODO preferably use var
             List<UserDTO> users = _userService.MapUserDTO(x);
             return Ok(users);
         }
 
         /// <summary>
-        /// Users controller Post action 
+        /// Users controller Post action
         /// </summary>
         /// <param name="userDTO">User information that needs to be added.</param>
         [HttpPost]
@@ -61,6 +67,7 @@ namespace Intro.WebApi.Controllers
         {
             try
             {
+                // TODO this should not be part of controller, should be put in repository
                 User user = _userService.CreateUserEntity(userDTO);
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
@@ -73,19 +80,21 @@ namespace Intro.WebApi.Controllers
 
             return Ok();
         }
-        
+
         /// <summary>
-        /// Edit User 
+        /// Edit User
         /// Method:PUT
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="userId">TODO missing descriptions wrong param</param>
         [HttpPut]
+        // TODO [Route("{userId}")]
         public async Task<ActionResult> PutUser(UserDTO userDTO)
         {
             try
             {
                 User user = _context.Users.Include(x=>x.UserTitle).Include(x=>x.UserType).FirstOrDefault(x => x.Id == userDTO.Id);
 
+                // TODO unused variables
                 user = _userService.EditUserAction(user, userDTO);
 
                 await _context.SaveChangesAsync();
@@ -105,6 +114,7 @@ namespace Intro.WebApi.Controllers
         /// <param name="userId">user id From querystring</param>
         /// <returns></returns>
         [HttpDelete]
+        // TODO [Route("{userId}")]
         public async Task<ActionResult> DeleteUser([FromQuery] int userId)
         {
             User user = _context.Users.FirstOrDefault(x => x.Id == userId);

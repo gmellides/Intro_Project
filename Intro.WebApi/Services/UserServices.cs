@@ -14,6 +14,7 @@ namespace Intro.WebApi.Services
     {
         private readonly IRepository<UserTitle> _userTitleRepository;
         private readonly IRepository<UserType> _userTypeRepository;
+        // TODO you have not included this in constructor so it won't be injected
         private readonly ILogger<UserServices> _logger;
 
         public UserServices(IRepository<UserTitle> userTitleRepository,
@@ -32,9 +33,11 @@ namespace Intro.WebApi.Services
         {
             if (user != null)
             {
+                // TODO this should be part of repository method
                 user.IsActive = false;
                 return user;
             }
+            // TODO redundant else since you return above
             else
             {
                 _logger.LogInformation($"User Not Found: There is no user with Id {user.Id}");
@@ -43,7 +46,7 @@ namespace Intro.WebApi.Services
         }
 
         /// <summary>
-        /// Edits the user action. 
+        /// Edits the user action.
         /// </summary>
         /// <param name="user">The user.</param>
         /// <param name="userDTO">The user dto.</param>
@@ -76,11 +79,9 @@ namespace Intro.WebApi.Services
 
                 return user;
             }
-            else
-            {
-                _logger.LogInformation($"Edit User: There is no user with Id {user.Id}");
-                return null;
-            }
+
+            _logger.LogInformation($"Edit User: There is no user with Id {user.Id}");
+            return null;
         }
 
         /// <summary>
@@ -90,6 +91,9 @@ namespace Intro.WebApi.Services
         /// <returns>A User Entity based on User DTO.</returns>
         public User CreateUserEntity(UserDTO userDTO)
         {
+            // TODO argument check missing
+            // TODO use a mapper for this
+            // TODO service methods should call repository methods to manipulate database
             User user = new User
             {
                 Name = userDTO.Name,
@@ -119,8 +123,10 @@ namespace Intro.WebApi.Services
         {
             List<UserDTO> userDTOs = new List<UserDTO>();
             // Link User Title and type
+            // TODO this is not efficient. you are making a query for each user, many of which you already queried for
             users.ForEach(x => x.UserTitle = _userTitleRepository.GetEntityByID(x.UserTitleId));
             users.ForEach(x => x.UserType = _userTypeRepository.GetEntityByID(x.UserTypeId));
+            // TODO use an Automapper for this
             foreach (var user in users)
             {
                 userDTOs.Add(new UserDTO
@@ -147,7 +153,7 @@ namespace Intro.WebApi.Services
             // Link User Title and type
             user.UserTitle = _userTitleRepository.GetEntityByID(user.UserTitleId);
             user.UserType = _userTypeRepository.GetEntityByID(user.UserTypeId);
-            UserDTO userDTO = new UserDTO 
+            UserDTO userDTO = new UserDTO
             {
                 Id = user.Id,
                 Surname = user.Surname,

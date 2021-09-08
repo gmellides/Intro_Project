@@ -11,6 +11,7 @@ namespace Intro_Project.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
+        // TODO anything scaffolded but unrelated should be removed
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"

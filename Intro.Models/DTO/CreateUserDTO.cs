@@ -6,6 +6,7 @@ namespace Intro.Models.DTO
 {
     public class CreateUserDTO
     {
+        // TODO all properties should be xml documented
         public int? Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
