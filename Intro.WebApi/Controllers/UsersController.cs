@@ -19,12 +19,8 @@ namespace Intro.WebApi.Controllers
     {
         private readonly ILogger<UsersController> _logger;
         // TODO controllers should only know of services and services should know of repositories. Repositories should know of context
-        private readonly IRepository<User> _usersRepository;
         // TODO unused repositories
-        private readonly IRepository<UserTitle> _userTitleRepository;
-        private readonly IRepository<UserType> _userTypeRepository;
         private readonly IUserService _userService;
-        private readonly IntroProjectContext _context;
 
         public UsersController(ILogger<UsersController> logger,
                                IRepository<User> usersRepository,
@@ -35,11 +31,7 @@ namespace Intro.WebApi.Controllers
         {
             // TODO argument checks
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _usersRepository = usersRepository;
-            _context = context;
             _userService = userService;
-            _userTitleRepository = userTitleRepository;
-            _userTypeRepository = userTypeRepository;
         }
 
         /// <summary>
@@ -50,12 +42,13 @@ namespace Intro.WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<List<UserDTO>>> GetAllUsers()
         {
-            // TODO one reason we want three layers is to not have the controller do any logic.
-            // TODO fetching all users in memory just to filter them is not efficient this filtering should be done in repository
-            var x = _usersRepository.GetAll().Where(x => x.IsActive == true).ToList();
-            // TODO preferably use var
-            List<UserDTO> users = _userService.MapUserDTO(x);
-            return Ok(users);
+            try
+            {
+                //_userService.
+            }catch(Exception e)
+            {
+
+            }
         }
 
         /// <summary>

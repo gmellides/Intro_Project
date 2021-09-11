@@ -1,6 +1,7 @@
 ﻿using Intro.Models.DTO;
 using Intro.Models.Model;
 using Intro.WebApi.Repositories;
+using Intro.WebApi.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,24 +13,103 @@ namespace Intro.WebApi.Services
 {
     public class UserServices : IUserService
     {
-        private readonly IRepository<UserTitle> _userTitleRepository;
-        private readonly IRepository<UserType> _userTypeRepository;
+        private readonly IUserRepository _usersRepository;
+        private readonly IUserTitleRepository _userTitleRepository;
+        private readonly IUserTypeRepository _userTypeRepository;
         // TODO you have not included this in constructor so it won't be injected
         private readonly ILogger<UserServices> _logger;
 
-        public UserServices(IRepository<UserTitle> userTitleRepository,
-                            IRepository<UserType> userTypeRepository)
+        public UserServices(ILogger<UserServices> logger,
+                            IUserRepository usersRepository,
+                            IUserTitleRepository userTitleRepository,
+                            IUserTypeRepository userTypeRepository)
         {
-            _userTitleRepository = userTitleRepository;
-            _userTypeRepository = userTypeRepository;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _usersRepository = usersRepository ?? throw new ArgumentNullException(nameof(usersRepository));
+            _userTitleRepository = userTitleRepository ?? throw new ArgumentNullException(nameof(userTitleRepository));
+            _userTypeRepository = userTypeRepository ?? throw new ArgumentNullException(nameof(userTypeRepository));
         }
 
         /// <summary>
-        /// Deletes user. this method will set isActive to false
+        /// 
         /// </summary>
-        /// <param name="user">The user.</param>
+        /// <param name="userId"></param>
+        public async void DeleteUserAsync(int userId)
+        {
+            try
+            {
+                var user =await _usersRepository.GetEntityByID(userId);
+                if (user != null)
+                {
+                    var updatedEntity = DeleteUserAction(user);
+                    // update item
+                    _usersRepository.UpdateEntity(updatedEntity);
+                }
+                else
+                {
+                    _logger.LogInformation("DeleteUserAsync - user is null");
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("");
+                throw e;
+            }
+        }
+
+        public async Task<List<User>> GetActiveUsers()
+        {
+            try
+            {
+                var users = await _usersRepository.GetAllActiveUsers();
+                return users;
+            }catch(Exception e)
+            {
+                _logger.LogError("");
+                throw e;
+            }
+        }
+
+        public async void EditUserAsync(int userId, UserDTO userDTO)
+        {
+            try
+            {
+                var user = await _usersRepository.GetEntityByID(userId);
+                if (user != null)
+                {
+                    var editedUser = EditUserAction(user, userDTO);
+                    // update item
+                }
+                else
+                {
+                    throw new NullReferenceException(@"Edit User Async - ");
+                }
+            }catch(Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public async void CreateUserAsync(UserDTO userDTO)
+        {
+            try
+            {
+                var user = CreateUserAction(userDTO);
+                // save
+                _usersRepository.SaveEntity(user);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="user"></param>
         /// <returns></returns>
-        public User DeleteUser(User user)
+        internal User DeleteUserAction(User user)
         {
             if (user != null)
             {
@@ -46,12 +126,12 @@ namespace Intro.WebApi.Services
         }
 
         /// <summary>
-        /// Edits the user action.
+        /// 
         /// </summary>
-        /// <param name="user">The user.</param>
-        /// <param name="userDTO">The user dto.</param>
+        /// <param name="user"></param>
+        /// <param name="userDTO"></param>
         /// <returns></returns>
-        public User EditUserAction(User user,UserDTO userDTO)
+        internal User EditUserAction(User user, UserDTO userDTO)
         {
 
             if (user != null)
@@ -85,11 +165,11 @@ namespace Intro.WebApi.Services
         }
 
         /// <summary>
-        /// Creates the user entity.
+        /// 
         /// </summary>
-        /// <param name="userDTO">A user dto.</param>
-        /// <returns>A User Entity based on User DTO.</returns>
-        public User CreateUserEntity(UserDTO userDTO)
+        /// <param name="userDTO"></param>
+        /// <returns></returns>
+        internal User CreateUserAction(UserDTO userDTO)
         {
             // TODO argument check missing
             // TODO use a mapper for this
@@ -114,11 +194,7 @@ namespace Intro.WebApi.Services
             return user;
         }
 
-        /// <summary>
-        /// Maps the user dto.
-        /// </summary>
-        /// <param name="users">List of user entities</param>
-        /// <returns>List of user DTOs</returns>
+
         public List<UserDTO> MapUserDTO(List<User> users)
         {
             List<UserDTO> userDTOs = new List<UserDTO>();

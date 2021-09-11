@@ -20,8 +20,6 @@ namespace Intro.Tests
         [TestInitialize]
         public void Setup()
         {
-            _userTitleRepository = new Mock<IRepository<UserTitle>>();
-            _userTypeRepository = new Mock<IRepository<UserType>>();
             _userService = new UserServices(_userTitleRepository.Object, _userTypeRepository.Object);
         }
 
