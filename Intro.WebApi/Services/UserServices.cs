@@ -1,49 +1,135 @@
-﻿using Intro.Models.DTO;
+﻿using AutoMapper;
+using Intro.Models.DTO;
 using Intro.Models.Model;
-using Intro.WebApi.Repositories;
 using Intro.WebApi.Repositories.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+using Intro.WebApi.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+
+[assembly: InternalsVisibleTo("Intro.Tests")] // InternalsVisibleTo Attribute is used to enable visib
 
 namespace Intro.WebApi.Services
 {
     public class UserServices : IUserService
     {
         private readonly IUserRepository _usersRepository;
-        private readonly IUserTitleRepository _userTitleRepository;
-        private readonly IUserTypeRepository _userTypeRepository;
-        // TODO you have not included this in constructor so it won't be injected
+        private readonly IMapper _mapper;
         private readonly ILogger<UserServices> _logger;
 
         public UserServices(ILogger<UserServices> logger,
                             IUserRepository usersRepository,
-                            IUserTitleRepository userTitleRepository,
-                            IUserTypeRepository userTypeRepository)
+                            IMapper mapper)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _usersRepository = usersRepository ?? throw new ArgumentNullException(nameof(usersRepository));
-            _userTitleRepository = userTitleRepository ?? throw new ArgumentNullException(nameof(userTitleRepository));
-            _userTypeRepository = userTypeRepository ?? throw new ArgumentNullException(nameof(userTypeRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         /// <summary>
-        /// 
+        /// Creates the user asynchronous.
         /// </summary>
-        /// <param name="userId"></param>
-        public async void DeleteUserAsync(int userId)
+        /// <param name="userDTO">The user dto.</param>
+        public async Task CreateUserAsync(UserDTO userDTO)
+        {
+            if (userDTO == null)
+            {
+                throw new ArgumentNullException(nameof(UserDTO));
+            }
+
+            try
+            {
+                var user = CreateUserAction(userDTO);
+                await _usersRepository.SaveEntity(user);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// Edits the user asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="userDTO">The user dto.</param>
+        /// <exception cref="System.NullReferenceException">Edit User Async -</exception>
+        public async Task EditUserAsync(int userId, UserDTO userDTO)
         {
             try
             {
-                var user =await _usersRepository.GetEntityByID(userId);
+                var user = await _usersRepository.GetEntityByID(userId);
+                if (user != null)
+                {
+                    var editedUser = EditUserAction(user, userDTO);
+                    await _usersRepository.UpdateEntity(editedUser);
+                }
+                else
+                {
+                    throw new NullReferenceException($"Edit User Async - No user found with {userId} user ID");
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// Gets active users asynchronous.
+        /// </summary>
+        /// <returns>A List of active users DTO</returns>
+        public async Task<List<UserDTO>> GetActiveUsersAsync()
+        {
+            try
+            {
+                var users = await _usersRepository.GetAllActiveUsers();
+                var usersDto = _mapper.Map<List<UserDTO>>(users);
+                return usersDto;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// Gets the full name of the active users fitered by.
+        /// </summary>
+        /// <param name="searchUserDTO"></param>
+        /// <returns>
+        /// List of Active user DTOs filtered by fullname
+        /// </returns>
+        public async Task<List<UserDTO>> GetActiveUsersFiteredByFullNameAsync(SearchUserDTO searchUserDTO)
+        {
+            try
+            {
+                var filteredUsers = await _usersRepository.GetActiveUsersFilteredByFullName(searchUserDTO.FullName);
+                var filteredUsersDTOs = _mapper.Map<List<UserDTO>>(filteredUsers);
+                return filteredUsersDTOs;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// Deletes the user asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
+        public async Task DeleteUserAsync(int userId)
+        {
+            try
+            {
+                var user = await _usersRepository.GetEntityByID(userId);
                 if (user != null)
                 {
                     var updatedEntity = DeleteUserAction(user);
-                    // update item
-                    _usersRepository.UpdateEntity(updatedEntity);
+                    await _usersRepository.UpdateEntity(updatedEntity);
                 }
                 else
                 {
@@ -57,58 +143,13 @@ namespace Intro.WebApi.Services
             }
         }
 
-        public async Task<List<User>> GetActiveUsers()
-        {
-            try
-            {
-                var users = await _usersRepository.GetAllActiveUsers();
-                return users;
-            }catch(Exception e)
-            {
-                _logger.LogError("");
-                throw e;
-            }
-        }
-
-        public async void EditUserAsync(int userId, UserDTO userDTO)
-        {
-            try
-            {
-                var user = await _usersRepository.GetEntityByID(userId);
-                if (user != null)
-                {
-                    var editedUser = EditUserAction(user, userDTO);
-                    // update item
-                }
-                else
-                {
-                    throw new NullReferenceException(@"Edit User Async - ");
-                }
-            }catch(Exception e)
-            {
-                throw e;
-            }
-        }
-
-        public async void CreateUserAsync(UserDTO userDTO)
-        {
-            try
-            {
-                var user = CreateUserAction(userDTO);
-                // save
-                _usersRepository.SaveEntity(user);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
+        // ---- Internal Methods (Access Identifier is internal to be able to test them from Unit Tests)
 
         /// <summary>
-        /// 
+        /// Deletes the user action.
         /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
+        /// <param name="user">The user.</param>
+        /// <returns>user entity with isActive field setted to false</returns>
         internal User DeleteUserAction(User user)
         {
             if (user != null)
@@ -126,14 +167,13 @@ namespace Intro.WebApi.Services
         }
 
         /// <summary>
-        /// 
+        /// Edits the user action.
         /// </summary>
-        /// <param name="user"></param>
-        /// <param name="userDTO"></param>
-        /// <returns></returns>
+        /// <param name="user">The user.</param>
+        /// <param name="userDTO">The user dto.</param>
+        /// <returns>A user entity with edited fields</returns>
         internal User EditUserAction(User user, UserDTO userDTO)
         {
-
             if (user != null)
             {
                 if (user.Name != userDTO.Name)
@@ -165,83 +205,16 @@ namespace Intro.WebApi.Services
         }
 
         /// <summary>
-        /// 
+        /// Creates the user action.
         /// </summary>
-        /// <param name="userDTO"></param>
-        /// <returns></returns>
+        /// <param name="userDTO">The user dto.</param>
+        /// <returns>A single entity with values based in userDTO</returns>
         internal User CreateUserAction(UserDTO userDTO)
         {
-            // TODO argument check missing
-            // TODO use a mapper for this
-            // TODO service methods should call repository methods to manipulate database
-            User user = new User
-            {
-                Name = userDTO.Name,
-                Surname = userDTO.Surname,
-                BirthDate = userDTO.BirthDate,
-                EmailAddress = userDTO.EmailAddress,
-                UserType = new UserType
-                {
-                    Code = userDTO.UserTypeCode,
-                    Description = userDTO.UserTypeDescription
-                },
-                UserTitle = new UserTitle
-                {
-                    Description = userDTO.UserTitleDescription
-                },
-                IsActive = true
-            };
+            var user = _mapper.Map<User>(userDTO);
+            user.IsActive = true;
+
             return user;
-        }
-
-
-        public List<UserDTO> MapUserDTO(List<User> users)
-        {
-            List<UserDTO> userDTOs = new List<UserDTO>();
-            // Link User Title and type
-            // TODO this is not efficient. you are making a query for each user, many of which you already queried for
-            users.ForEach(x => x.UserTitle = _userTitleRepository.GetEntityByID(x.UserTitleId));
-            users.ForEach(x => x.UserType = _userTypeRepository.GetEntityByID(x.UserTypeId));
-            // TODO use an Automapper for this
-            foreach (var user in users)
-            {
-                userDTOs.Add(new UserDTO
-                {
-                    Id = user.Id,
-                    Surname = user.Surname,
-                    Name = user.Name,
-                    BirthDate = user.BirthDate,
-                    EmailAddress = user.EmailAddress,
-                    UserTitleDescription = user.UserTitle.Description,
-                    UserTypeCode = user.UserType.Code,
-                    UserTypeDescription = user.UserType.Description
-                });
-            }
-            return userDTOs;
-        }
-        /// <summary>
-        /// Maps the user dto.
-        /// </summary>
-        /// <param name="user">User Entity.</param>
-        /// <returns>UserDTO</returns>
-        public UserDTO MapUserDTO(User user)
-        {
-            // Link User Title and type
-            user.UserTitle = _userTitleRepository.GetEntityByID(user.UserTitleId);
-            user.UserType = _userTypeRepository.GetEntityByID(user.UserTypeId);
-            UserDTO userDTO = new UserDTO
-            {
-                Id = user.Id,
-                Surname = user.Surname,
-                Name = user.Name,
-                BirthDate = user.BirthDate,
-                EmailAddress = user.EmailAddress,
-                UserTitleDescription = user.UserTitle.Description,
-                UserTypeCode = user.UserType.Code,
-                UserTypeDescription = user.UserType.Description
-            };
-
-            return userDTO;
         }
     }
 }

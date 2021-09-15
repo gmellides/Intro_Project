@@ -1,20 +1,15 @@
+using AutoMapper;
 using Intro.Models.Model;
 using Intro.WebApi.Repositories;
+using Intro.WebApi.Repositories.Interfaces;
+using Intro.WebApi.Services;
+using Intro.WebApi.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Intro.WebApi.Services;
 
 namespace Intro.WebApi
 {
@@ -43,13 +38,33 @@ namespace Intro.WebApi
                 }
             );
 
-            services.AddScoped<IRepository<User>, UserRepository>();
-            services.AddScoped<IRepository<UserTitle>, UserTitleRepository>();
-            services.AddScoped<IRepository<UserType>, UserTypeRepository>();
-            services.AddScoped<IUserService, UserServices>();
+            // AutoMapper configuration
+            var userMappingConfig = new MapperConfiguration(c =>
+            {
+                c.AddProfile(new UserMappingProfile());
+            });
+            IMapper mapper = userMappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
-            services.AddDbContext<IntroProjectContext>(options => options.UseSqlServer(Configuration.GetConnectionString("IntroProjectDB")));
+            // Repositories dependency injection
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserTitleRepository, UserTitleRepository>();
+            services.AddScoped<IUserTypeRepository, UserTypeRepository>();
+
+            // Services dependency injection
+            services.AddScoped<IUserService, UserServices>();
+            services.AddScoped<IUserTitleService, UserTitleService>();
+            services.AddScoped<IUserTypeService, UserTypeService>();
+
+            // Database Context
+            services.AddDbContext<IntroProjectContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Intro")));
+
             services.AddControllers();
+
+            // Swagger configuration load xml documentation
+            services.AddSwaggerGen(options =>
+            options.IncludeXmlComments(".\\Intro.WebApi.xml")
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +86,14 @@ namespace Intro.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Intro Web API");
+                c.RoutePrefix = string.Empty;
             });
         }
     }

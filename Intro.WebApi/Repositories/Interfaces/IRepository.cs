@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Intro.WebApi.Repositories
 {
-    public interface IRepository<T> where T:class
+    public interface IRepository<T> where T : class
     {
         // TODO xml documentation missing
         // TODO this can be used as your base repository which the other repository interfaces can extend
@@ -17,7 +15,7 @@ namespace Intro.WebApi.Repositories
         Task<List<T>> GetAll();
 
         /// <summary>
-        /// Returns an entity with 
+        /// Returns an entity with
         /// </summary>
         /// <param name="id">Entity ID</param>
         /// <returns>A single entity</returns>
@@ -26,12 +24,13 @@ namespace Intro.WebApi.Repositories
         /// <summary>
         /// Save Entity in database
         /// </summary>
-        /// <param name="input"></param>
-        void SaveEntity(T input);
+        /// <param name="input">Entity to be saved in DB</param>
+        Task SaveEntity(T input);
+
         /// <summary>
         /// Update Entity
         /// </summary>
-        /// <param name="input"></param>
-        void UpdateEntity(T input);
+        /// <param name="input">The entity that needs to be updated</param>
+        Task UpdateEntity(T input);
     }
 }

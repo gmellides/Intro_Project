@@ -1,0 +1,295 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Intro.WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:Intro.WebApi.Controllers.UsersController.GetAllUsers">
+            <summary>
+            Get all Active registered users
+            </summary>
+            <returns>A list of all active users</returns>
+        </member>
+        <member name="M:Intro.WebApi.Controllers.UsersController.GetUsersFilteredByFullName(Intro.Models.DTO.SearchUserDTO)">
+            <summary>
+            Gets the full name of the users filtered by.
+            </summary>
+            <param name="input">The fullname.</param>
+            <returns>A list of active Users filtered by full name</returns>
+        </member>
+        <member name="M:Intro.WebApi.Controllers.UsersController.PostUser(Intro.Models.DTO.UserDTO)">
+            <summary>
+            Users controller Post action
+            </summary>
+            <param name="userDTO">User information that needs to be added.</param>
+        </member>
+        <member name="M:Intro.WebApi.Controllers.UsersController.PutUser(System.Int32,Intro.Models.DTO.UserDTO)">
+            <summary>
+            Puts the user.
+            </summary>
+            <param name="userId">The user identifier.</param>
+            <param name="userDTO">The user dto.</param>
+            <returns>200 - User is edited, 500 - in case of exception</returns>
+        </member>
+        <member name="M:Intro.WebApi.Controllers.UsersController.DeleteUser(System.Int32)">
+            <summary>
+            Sets isActive to false.
+            </summary>
+            <param name="userId">user id From querystring</param>
+            <returns>200 if user is deleted,500 - in case of error</returns>
+        </member>
+        <member name="M:Intro.WebApi.Controllers.UserTitlesController.GetAllUserTitles">
+            <summary>
+            Gets all user titles.
+            </summary>
+            <returns>A list of All user title DTOs</returns>
+        </member>
+        <member name="M:Intro.WebApi.Controllers.UserTypesController.GetAllUserTypes">
+            <summary>
+            Gets all user types.
+            </summary>
+            <returns>A List of User Types DTOs</returns>
+        </member>
+        <member name="M:Intro.WebApi.Repositories.IRepository`1.GetAll">
+            <summary>
+            Get all entities from database
+            </summary>
+            <returns>List of models from Database</returns>
+        </member>
+        <member name="M:Intro.WebApi.Repositories.IRepository`1.GetEntityByID(System.Int32)">
+            <summary>
+            Returns an entity with
+            </summary>
+            <param name="id">Entity ID</param>
+            <returns>A single entity</returns>
+        </member>
+        <member name="M:Intro.WebApi.Repositories.IRepository`1.SaveEntity(`0)">
+            <summary>
+            Save Entity in database
+            </summary>
+            <param name="input">Entity to be saved in DB</param>
+        </member>
+        <member name="M:Intro.WebApi.Repositories.IRepository`1.UpdateEntity(`0)">
+            <summary>
+            Update Entity
+            </summary>
+            <param name="input">The entity that needs to be updated</param>
+        </member>
+        <member name="M:Intro.WebApi.Repositories.Interfaces.IUserRepository.GetAllActiveUsers">
+            <summary>
+            Gets all active users.
+            </summary>
+            <returns>A list of user entities where isActive Field is true</returns>
+        </member>
+        <member name="M:Intro.WebApi.Repositories.Interfaces.IUserRepository.GetActiveUsersFilteredByFullName(System.String)">
+            <summary>
+            Gets the full name of the active users filtered by.
+            </summary>
+            <param name="fullname">The fullname.</param>
+            <returns>a list of active user entities where name or surname includes parameter</returns>
+        </member>
+        <member name="M:Intro.WebApi.Repositories.UserRepository.GetAll">
+            <summary>
+            Get all entities from database
+            </summary>
+            <returns>
+            List of models from Database
+            </returns>
+        </member>
+        <member name="M:Intro.WebApi.Repositories.UserRepository.GetEntityByID(System.Int32)">
+            <summary>
+            Returns an entity with
+            </summary>
+            <param name="id">Entity ID</param>
+            <returns>
+            A single entity
+            </returns>
+        </member>
+        <member name="M:Intro.WebApi.Repositories.UserRepository.GetAllActiveUsers">
+            <summary>
+            Gets all active users.
+            </summary>
+            <returns>
+            A list of user entities where isActive Field is true
+            </returns>
+        </member>
+        <member name="M:Intro.WebApi.Repositories.UserRepository.SaveEntity(Intro.Models.Model.User)">
+            <summary>
+            Saves the entity.
+            </summary>
+            <param name="user">The user.</param>
+        </member>
+        <member name="M:Intro.WebApi.Repositories.UserRepository.UpdateEntity(Intro.Models.Model.User)">
+            <summary>
+            Updates the entity.
+            </summary>
+            <param name="user">The user.</param>
+        </member>
+        <member name="M:Intro.WebApi.Repositories.UserTitleRepository.GetAll">
+            <summary>
+            Gets all.
+            </summary>
+            <returns>List of User Titles</returns>
+        </member>
+        <member name="M:Intro.WebApi.Repositories.UserTitleRepository.GetEntityByID(System.Int32)">
+            <summary>
+            Gets the entity by identifier.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns>User title entity</returns>
+        </member>
+        <member name="M:Intro.WebApi.Repositories.UserTitleRepository.SaveEntity(Intro.Models.Model.UserTitle)">
+            <summary>
+            Saves the entity.
+            </summary>
+            <param name="input">The input.</param>
+        </member>
+        <member name="M:Intro.WebApi.Repositories.UserTitleRepository.UpdateEntity(Intro.Models.Model.UserTitle)">
+            <summary>
+            Updates the entity.
+            </summary>
+            <param name="input">The input.</param>
+        </member>
+        <member name="M:Intro.WebApi.Repositories.UserTypeRepository.GetAll">
+            <summary>
+            Gets all.
+            </summary>
+            <returns>A list of all user type entities</returns>
+        </member>
+        <member name="M:Intro.WebApi.Repositories.UserTypeRepository.GetEntityByID(System.Int32)">
+            <summary>
+            Gets the entity by identifier.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns>a single entity filtered by id.</returns>
+        </member>
+        <member name="M:Intro.WebApi.Repositories.UserTypeRepository.SaveEntity(Intro.Models.Model.UserType)">
+            <summary>
+            Saves the entity.
+            </summary>
+            <param name="input">The input.</param>
+        </member>
+        <member name="M:Intro.WebApi.Repositories.UserTypeRepository.UpdateEntity(Intro.Models.Model.UserType)">
+            <summary>
+            Updates the entity.
+            </summary>
+            <param name="input">The input.</param>
+        </member>
+        <member name="M:Intro.WebApi.Services.Interfaces.IUserService.CreateUserAsync(Intro.Models.DTO.UserDTO)">
+            <summary>
+            Creates the user asynchronous.
+            </summary>
+            <param name="userDTO">The user dto.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Intro.WebApi.Services.Interfaces.IUserService.EditUserAsync(System.Int32,Intro.Models.DTO.UserDTO)">
+            <summary>
+            Edits the user asynchronous.
+            </summary>
+            <param name="userId">The user identifier.</param>
+            <param name="userDTO">The user dto.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Intro.WebApi.Services.Interfaces.IUserService.DeleteUserAsync(System.Int32)">
+            <summary>
+            Deletes the user asynchronous.
+            </summary>
+            <param name="userId">The user identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Intro.WebApi.Services.Interfaces.IUserService.GetActiveUsersAsync">
+            <summary>
+            Gets the active users asynchronous.
+            </summary>
+            <returns>all active users</returns>
+        </member>
+        <member name="M:Intro.WebApi.Services.Interfaces.IUserService.GetActiveUsersFiteredByFullNameAsync(Intro.Models.DTO.SearchUserDTO)">
+            <summary>
+            Gets the full name of the active users fitered by.
+            </summary>
+            <returns>List of Active user DTOs filtered by fullname</returns>
+        </member>
+        <member name="M:Intro.WebApi.Services.Interfaces.IUserTitleService.GetAllUserTitlesAsync">
+            <summary>
+            Gets all user titles asynchronous.
+            </summary>
+            <returns>A list with all user titles</returns>
+        </member>
+        <member name="M:Intro.WebApi.Services.Interfaces.IUserTypeService.GetAllUserTypesAsync">
+            <summary>
+            Gets all user types asynchronous.
+            </summary>
+            <returns>a list with all user types dtos</returns>
+        </member>
+        <member name="M:Intro.WebApi.Services.UserServices.CreateUserAsync(Intro.Models.DTO.UserDTO)">
+            <summary>
+            Creates the user asynchronous.
+            </summary>
+            <param name="userDTO">The user dto.</param>
+        </member>
+        <member name="M:Intro.WebApi.Services.UserServices.EditUserAsync(System.Int32,Intro.Models.DTO.UserDTO)">
+            <summary>
+            Edits the user asynchronous.
+            </summary>
+            <param name="userId">The user identifier.</param>
+            <param name="userDTO">The user dto.</param>
+            <exception cref="T:System.NullReferenceException">Edit User Async -</exception>
+        </member>
+        <member name="M:Intro.WebApi.Services.UserServices.GetActiveUsersAsync">
+            <summary>
+            Gets active users asynchronous.
+            </summary>
+            <returns>A List of active users DTO</returns>
+        </member>
+        <member name="M:Intro.WebApi.Services.UserServices.GetActiveUsersFiteredByFullNameAsync(Intro.Models.DTO.SearchUserDTO)">
+            <summary>
+            Gets the full name of the active users fitered by.
+            </summary>
+            <param name="fullname"></param>
+            <returns>
+            List of Active user DTOs filtered by fullname
+            </returns>
+        </member>
+        <member name="M:Intro.WebApi.Services.UserServices.DeleteUserAsync(System.Int32)">
+            <summary>
+            Deletes the user asynchronous.
+            </summary>
+            <param name="userId">The user identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Intro.WebApi.Services.UserServices.DeleteUserAction(Intro.Models.Model.User)">
+            <summary>
+            Deletes the user action.
+            </summary>
+            <param name="user">The user.</param>
+            <returns>user entity with isActive field setted to false</returns>
+        </member>
+        <member name="M:Intro.WebApi.Services.UserServices.EditUserAction(Intro.Models.Model.User,Intro.Models.DTO.UserDTO)">
+            <summary>
+            Edits the user action.
+            </summary>
+            <param name="user">The user.</param>
+            <param name="userDTO">The user dto.</param>
+            <returns>A user entity with edited fields</returns>
+        </member>
+        <member name="M:Intro.WebApi.Services.UserServices.CreateUserAction(Intro.Models.DTO.UserDTO)">
+            <summary>
+            Creates the user action.
+            </summary>
+            <param name="userDTO">The user dto.</param>
+            <returns>A single entity with values based in userDTO</returns>
+        </member>
+        <member name="M:Intro.WebApi.Services.UserTitleService.GetAllUserTitlesAsync">
+            <summary>
+            Gets all user titles asynchronous.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Intro.WebApi.Services.UserTypeService.GetAllUserTypesAsync">
+            <summary>
+            Gets all user types asynchronous.
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

@@ -1,14 +1,9 @@
 ﻿using Intro.Models.DTO;
-using Intro.Models.Model;
-using Intro.WebApi.Repositories;
-using Intro.WebApi.Services;
+using Intro.WebApi.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Intro.WebApi.Controllers
@@ -18,36 +13,56 @@ namespace Intro.WebApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ILogger<UsersController> _logger;
+
         // TODO controllers should only know of services and services should know of repositories. Repositories should know of context
         // TODO unused repositories
         private readonly IUserService _userService;
 
         public UsersController(ILogger<UsersController> logger,
-                               IRepository<User> usersRepository,
-                               IRepository<UserTitle> userTitleRepository,
-                               IRepository<UserType> userTypeRepository,
-                               IUserService userService,
-                               IntroProjectContext context)
+                               IUserService userService)
         {
             // TODO argument checks
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _userService = userService;
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
         /// <summary>
         /// Get all Active registered users
-        /// METHOD: GET
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of all active users</returns>
         [HttpGet]
         public async Task<ActionResult<List<UserDTO>>> GetAllUsers()
         {
             try
             {
-                //_userService.
-            }catch(Exception e)
+                List<UserDTO> users = await _userService.GetActiveUsersAsync();
+                return Ok(users);
+            }
+            catch (Exception e)
             {
+                _logger.LogError($"GetAllUsers - Error occured with the exception {e.Message}");
+                return StatusCode(500);
+            }
+        }
 
+        /// <summary>
+        /// Gets the full name of the users filtered by.
+        /// </summary>
+        /// <param name="input">The fullname.</param>
+        /// <returns>A list of active Users filtered by full name</returns>
+        [HttpPost]
+        [Route("filterUsers")]
+        public async Task<ActionResult<List<UserDTO>>> GetUsersFilteredByFullName([FromBody] SearchUserDTO input)
+        {
+            try
+            {
+                var filteredUsers = await _userService.GetActiveUsersFiteredByFullNameAsync(input);
+                return Ok(filteredUsers);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"GetUsersFilteredByFullName - Error occured with the exception {e.Message}");
+                return StatusCode(500);
             }
         }
 
@@ -61,9 +76,7 @@ namespace Intro.WebApi.Controllers
             try
             {
                 // TODO this should not be part of controller, should be put in repository
-                User user = _userService.CreateUserEntity(userDTO);
-                _context.Users.Add(user);
-                await _context.SaveChangesAsync();
+                await _userService.CreateUserAsync(userDTO);
             }
             catch (Exception e)
             {
@@ -75,22 +88,19 @@ namespace Intro.WebApi.Controllers
         }
 
         /// <summary>
-        /// Edit User
-        /// Method:PUT
+        /// Puts the user.
         /// </summary>
-        /// <param name="userId">TODO missing descriptions wrong param</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="userDTO">The user dto.</param>
+        /// <returns>200 - User is edited, 500 - in case of exception</returns>
         [HttpPut]
-        // TODO [Route("{userId}")]
-        public async Task<ActionResult> PutUser(UserDTO userDTO)
+        [Route("{userId}")]
+        public async Task<ActionResult> PutUser(int userId, UserDTO userDTO)
         {
             try
             {
-                User user = _context.Users.Include(x=>x.UserTitle).Include(x=>x.UserType).FirstOrDefault(x => x.Id == userDTO.Id);
-
                 // TODO unused variables
-                user = _userService.EditUserAction(user, userDTO);
-
-                await _context.SaveChangesAsync();
+                await _userService.EditUserAsync(userId, userDTO);
             }
             catch (Exception e)
             {
@@ -102,27 +112,23 @@ namespace Intro.WebApi.Controllers
 
         /// <summary>
         /// Sets isActive to false.
-        /// Method:DELETE
         /// </summary>
         /// <param name="userId">user id From querystring</param>
-        /// <returns></returns>
+        /// <returns>200 if user is deleted,500 - in case of error</returns>
         [HttpDelete]
-        // TODO [Route("{userId}")]
-        public async Task<ActionResult> DeleteUser([FromQuery] int userId)
+        [Route("{userId}")]
+        public async Task<ActionResult> DeleteUser(int userId)
         {
-            User user = _context.Users.FirstOrDefault(x => x.Id == userId);
-            if (user != null)
+            try
             {
-                user = _userService.DeleteUser(user);
-                await _context.SaveChangesAsync();
+                await _userService.DeleteUserAsync(userId);
             }
-            else
+            catch (Exception e)
             {
-                _logger.LogError($"DeleteUser - user with id {userId} not found.");
-                return StatusCode(400);
+                _logger.LogError($"DeleteUser - An error occured with message {e.Message} and stackTrace {e.StackTrace}");
+                return StatusCode(500);
             }
             return Ok();
         }
-
     }
 }
