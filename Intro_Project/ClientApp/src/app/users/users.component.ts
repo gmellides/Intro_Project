@@ -1,11 +1,10 @@
-import { InputModalityDetector } from '@angular/cdk/a11y';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { UserService } from '../user.service';
+import { take } from 'rxjs/operators';
+import { UserService } from '../services/user.service';
 import { AddUserComponent } from './add-user/add-user.component';
-import {  IUserDTO } from './user.interface';
+import { ISearchUserDTO, IUserDTO } from './user.interface';
 
 @Component({
   selector: 'app-users',
@@ -16,15 +15,14 @@ export class UsersComponent implements OnInit {
 
   public users :IUserDTO[];
   public filteredUsers:IUserDTO[];
-
-  public _userSubscribtion:Subscription;
+  public searchUserValue: ISearchUserDTO = {};
   public _filterValue: string = '';
   displayedColumns = ["name", "Surname","BirthDate","email"];
   
   constructor(private userService:UserService,private router:Router,private dialog:MatDialog) { }
 
   ngOnInit() {
-    this._userSubscribtion = this.userService.getAllUsers().subscribe(
+    this.userService.getAllUsers().pipe(take(1)).subscribe(
       {
         next: x => {
           this.users = x;
@@ -35,9 +33,17 @@ export class UsersComponent implements OnInit {
     );
 
   }
+
+  searchUsers(){
+    this.searchUserValue.fullName = this._filterValue; 
+    this.userService.filterUsers(this.searchUserValue).pipe(take(1)).subscribe({
+      next: x=>{this.filteredUsers=x},
+      error: err=>console.log("Error occured with filter users")
+    });
+  }
   
   openUserDetails(input:IUserDTO){
-    if( Object.entries(input).length !== 0)
+    if(Object.entries(input).length !== 0)
       this.router.navigateByUrl('/userDetails',{state:{userDetails:input}});
   }
 
@@ -46,18 +52,12 @@ export class UsersComponent implements OnInit {
       user.name?.toLowerCase().includes(criteria.toLowerCase()) || user.surname?.toLowerCase().includes(criteria.toLowerCase()) );
   }
 
-
-  // @Input()
   get filterValue():string{
     return this._filterValue;
   }
   set filterValue(value:string){
     this._filterValue = value;
-    let results = this.applyFiltering(value);
-    if(results!==undefined && results.length>0)
-      this.filteredUsers = results;
-    else
-      this.filteredUsers = [{}] as IUserDTO[];
+    this.filteredUsers = this.users;
   }
 
   openAddUserDialog(){

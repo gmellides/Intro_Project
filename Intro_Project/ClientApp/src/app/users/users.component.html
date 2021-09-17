@@ -10,8 +10,13 @@
     
     <hr/>
     <div class="row" *ngIf="!!filteredUsers && filteredUsers.length >0 "> 
-        <label for="userFilterCriteria">Full Name Filter:</label>
-        <input type="text" class="form-control" name="userFilterCriteria" [(ngModel)]='filterValue' /> 
+        <div class="col">
+            <label for="userFilterCriteria">Full Name Filter:</label>
+            <input type="text" class="form-control" name="userFilterCriteria" [(ngModel)]='filterValue' /> 
+        </div>
+        <div class="col">
+            <button class="btn btn-primary" (click)="searchUsers()">Search</button>
+        </div>
     </div>
 
     <div *ngIf="filteredUsers.length >0; then showUsersTable; else noRegisteredUsers"></div>

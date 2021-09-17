@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { UserService } from 'src/app/user.service';
+import { UserService } from 'src/app/services/user.service';
 import { IUserDTO } from '../user.interface';
 
 @Component({
@@ -11,11 +10,9 @@ import { IUserDTO } from '../user.interface';
   styleUrls: ['./confirmation-Dialog.component.css']
 })
 export class ConfirmationDialogComponent implements OnInit {
-
-  @Input() public isEditUser:boolean = false;
   @Input() public isDeleteUser:boolean = false;
-  @Input() public user:IUserDTO;
-  public _userSubscription:Subscription;
+  @Input() public user: IUserDTO;
+
   
   public modalTitle: string;
   public modalQuestion: string;
@@ -23,10 +20,6 @@ export class ConfirmationDialogComponent implements OnInit {
   constructor(private dialogRef: MatDialogRef<ConfirmationDialogComponent>,private router:Router,private userService:UserService) { }
 
   ngOnInit() {
-    if(this.isEditUser){
-      this.modalTitle = "Edit User Action - Confirmation Dialog";
-      this.modalQuestion = "Are you sure that you want to edit user details?";
-    }
     if(this.isDeleteUser){
       this.modalTitle = "Delete User Action - Confirmation Dialog";
       this.modalQuestion = "Are you sure that you want to Delete this User?";
@@ -35,19 +28,9 @@ export class ConfirmationDialogComponent implements OnInit {
   }
   
   answerYesAction(){
-    if(this.isEditUser){
-      this._userSubscription = this.userService.updateUser(this.user).subscribe(
-        {
-          next: x =>console.log(x),
-          error: err => console.log("Error occured in User service")
-        }
-      );
-      this.dialogRef.close(); // Close dialog after request
-      this.router.navigateByUrl('/users'); // navigate back to users page.
-    }
 
     if(this.isDeleteUser){
-      this._userSubscription = this.userService.deleteUser(this.user.id).subscribe(
+      this.userService.deleteUser(this.user.id).subscribe(
         {
           next: x =>console.log(x),
           error: err => console.log("Error occured in User service")

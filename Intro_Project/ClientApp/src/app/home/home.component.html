@@ -3,38 +3,37 @@
 
 <h4>Users</h4>
 <div class="row">
-    <div class="col">
-        <div *ngIf="_usersCollection === undefined || !_usersCollection.length; then messageNoUsers; else usersMiniTable;"></div>
+  <div class="col">
+    <div *ngIf="_usersCollection === undefined || !_usersCollection.length; then messageNoUsers; else usersMiniTable;"></div>
 
-        <ng-template #messageNoUsers>
-            <p>Use the menu to add some users.</p>
-        </ng-template>
+    <ng-template #messageNoUsers>
+      <p>Use the menu to add some users.</p>
+    </ng-template>
 
-        <ng-template #usersMiniTable>
-            <app-users-table [users]='_usersCollection'></app-users-table>
-        </ng-template>
-
+    <ng-template #usersMiniTable>
+      <app-users-table [users]='_usersCollection'></app-users-table>
+    </ng-template>
+  </div>
+  <div class="col">
+    <div class="card" style="width: 100%;">
+      <div class="card-header">
+        <h4>Quick Actions</h4>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><button (click)="openAddUserModal()" class="btn btn-link">Add New User</button> </li>
+        <li class="list-group-item"><button [routerLink]="['/users']" class="btn btn-link">Show All Users</button></li>
+      </ul>
     </div>
-    <div class="col">
-        <div class="card" style="width: 100%;">
-            <div class="card-header">
-                <h4>Quick Actions</h4>
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><button (click)="openAddUserModal()"  class="btn btn-link">Add New User</button> </li>
-                <li class="list-group-item"><button [routerLink]="['/users']" class="btn btn-link">Show All Users</button></li>
-            </ul>
-        </div>
-    </div>
+  </div>
 </div>
 
 <hr>
 
 <div class="row">
-    <div class="col"><h4>Map</h4></div>
-    <div class="col"><button class="btn btn-link float-right" [routerLink]="['/map']" >Open Map page</button></div>
+  <div class="col"><h4>Map</h4></div>
+  <div class="col"><button class="btn btn-link float-right" [routerLink]="['/map']">Open Map page</button></div>
 </div>
 <br>
 <div class="mapContainer">
-    <app-map [latitude]='35.898819' [longitude]="14.513474" [zoomLevel]="15"> </app-map>
+  <app-map [latitude]='35.898819' [longitude]="14.513474" [zoomLevel]="15"> </app-map>
 </div>

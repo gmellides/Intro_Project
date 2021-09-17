@@ -1,4 +1,4 @@
-import { Component, OnInit,Input, ViewChild, AfterViewInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { IUserDTO } from '../user.interface';
 
 @Component({

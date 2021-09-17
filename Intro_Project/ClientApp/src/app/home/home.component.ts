@@ -1,7 +1,7 @@
 import { OnInit } from '@angular/core';
 import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { UserService } from '../user.service';
+import { UserService } from '../services/user.service';
 import { IUserDTO } from '../users/user.interface';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { AddUserComponent } from '../users/add-user/add-user.component';
@@ -16,8 +16,6 @@ export class HomeComponent implements OnInit,OnDestroy{
   public _userSubscribtion:Subscription;
   
   constructor(private userService:UserService,private dialog:MatDialog){}
-
-
 
   ngOnInit(): void {
     this._userSubscribtion = this.userService.getAllUsers().subscribe(

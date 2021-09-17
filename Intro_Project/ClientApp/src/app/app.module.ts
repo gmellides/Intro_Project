@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -16,7 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import {MatSortModule} from '@angular/material/sort';
 import { MapPageComponent } from './map-page/map-page.component';
 import { MatDialogModule } from "@angular/material/dialog";
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { AddUserComponent } from './users/add-user/add-user.component';
 import { ViewEditUserDetailsComponent } from './users/view-edit-user-details/view-edit-user-details.component';
 
@@ -41,6 +41,7 @@ import { ViewEditUserDetailsComponent } from './users/view-edit-user-details/vie
     MatSortModule,
     MatDialogModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([
     { path: '' , component: HomeComponent, pathMatch: 'full' },
     { path: 'users' , component: UsersComponent },
