@@ -17,18 +17,18 @@
             <param name="input">The fullname.</param>
             <returns>A list of active Users filtered by full name</returns>
         </member>
-        <member name="M:Intro.WebApi.Controllers.UsersController.PostUser(Intro.Models.DTO.UserDTO)">
+        <member name="M:Intro.WebApi.Controllers.UsersController.PostUser(Intro.Models.DTO.CreateEditUserDTO)">
             <summary>
             Users controller Post action
             </summary>
-            <param name="userDTO">User information that needs to be added.</param>
+            <param name="CreateEditUserDTO">User information that needs to be added.</param>
         </member>
-        <member name="M:Intro.WebApi.Controllers.UsersController.PutUser(System.Int32,Intro.Models.DTO.UserDTO)">
+        <member name="M:Intro.WebApi.Controllers.UsersController.PutUser(System.Int32,Intro.Models.DTO.CreateEditUserDTO)">
             <summary>
             Puts the user.
             </summary>
             <param name="userId">The user identifier.</param>
-            <param name="userDTO">The user dto.</param>
+            <param name="CreateEditUserDTO">The user dto.</param>
             <returns>200 - User is edited, 500 - in case of exception</returns>
         </member>
         <member name="M:Intro.WebApi.Controllers.UsersController.DeleteUser(System.Int32)">
@@ -175,14 +175,14 @@
             </summary>
             <param name="input">The input.</param>
         </member>
-        <member name="M:Intro.WebApi.Services.Interfaces.IUserService.CreateUserAsync(Intro.Models.DTO.UserDTO)">
+        <member name="M:Intro.WebApi.Services.Interfaces.IUserService.CreateUserAsync(Intro.Models.DTO.CreateEditUserDTO)">
             <summary>
             Creates the user asynchronous.
             </summary>
             <param name="userDTO">The user dto.</param>
             <returns></returns>
         </member>
-        <member name="M:Intro.WebApi.Services.Interfaces.IUserService.EditUserAsync(System.Int32,Intro.Models.DTO.UserDTO)">
+        <member name="M:Intro.WebApi.Services.Interfaces.IUserService.EditUserAsync(System.Int32,Intro.Models.DTO.CreateEditUserDTO)">
             <summary>
             Edits the user asynchronous.
             </summary>
@@ -221,13 +221,13 @@
             </summary>
             <returns>a list with all user types dtos</returns>
         </member>
-        <member name="M:Intro.WebApi.Services.UserServices.CreateUserAsync(Intro.Models.DTO.UserDTO)">
+        <member name="M:Intro.WebApi.Services.UserServices.CreateUserAsync(Intro.Models.DTO.CreateEditUserDTO)">
             <summary>
             Creates the user asynchronous.
             </summary>
             <param name="userDTO">The user dto.</param>
         </member>
-        <member name="M:Intro.WebApi.Services.UserServices.EditUserAsync(System.Int32,Intro.Models.DTO.UserDTO)">
+        <member name="M:Intro.WebApi.Services.UserServices.EditUserAsync(System.Int32,Intro.Models.DTO.CreateEditUserDTO)">
             <summary>
             Edits the user asynchronous.
             </summary>
@@ -245,7 +245,7 @@
             <summary>
             Gets the full name of the active users fitered by.
             </summary>
-            <param name="fullname"></param>
+            <param name="searchUserDTO"></param>
             <returns>
             List of Active user DTOs filtered by fullname
             </returns>
@@ -264,7 +264,7 @@
             <param name="user">The user.</param>
             <returns>user entity with isActive field setted to false</returns>
         </member>
-        <member name="M:Intro.WebApi.Services.UserServices.EditUserAction(Intro.Models.Model.User,Intro.Models.DTO.UserDTO)">
+        <member name="M:Intro.WebApi.Services.UserServices.EditUserAction(Intro.Models.Model.User,Intro.Models.DTO.CreateEditUserDTO)">
             <summary>
             Edits the user action.
             </summary>
@@ -272,7 +272,7 @@
             <param name="userDTO">The user dto.</param>
             <returns>A user entity with edited fields</returns>
         </member>
-        <member name="M:Intro.WebApi.Services.UserServices.CreateUserAction(Intro.Models.DTO.UserDTO)">
+        <member name="M:Intro.WebApi.Services.UserServices.CreateUserAction(Intro.Models.DTO.CreateEditUserDTO)">
             <summary>
             Creates the user action.
             </summary>

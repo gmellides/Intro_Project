@@ -10,9 +10,10 @@ namespace Intro.WebApi
         {
             // User to UserDTO and vice versa
             CreateMap<User, UserDTO>();
+            CreateMap<CreateEditUserDTO, User>().ForMember(dest => dest.IsActive, source => source.MapFrom(_ => true));
             CreateMap<UserDTO, User>()
-                .ForMember(source => source.UserTitle, dest => dest.MapFrom(x => new UserTitle { Description = x.UserTitleDescription }))
-                .ForMember(source => source.UserType, dest => dest.MapFrom(x => new UserType { Description = x.UserTypeDescription, Code = x.UserTypeCode }));
+                .ForMember(dest => dest.UserTitle, source => source.MapFrom(x => new UserTitle { Description = x.UserTitleDescription }))
+                .ForMember(dest => dest.UserType, source => source.MapFrom(x => new UserType { Description = x.UserTypeDescription, Code = x.UserTypeCode }));
 
             // UserTitle to UserTitleDTO and vice versa
             CreateMap<UserTitle, UserTitleDTO>();

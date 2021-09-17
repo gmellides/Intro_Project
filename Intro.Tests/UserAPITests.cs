@@ -1,7 +1,10 @@
+using AutoMapper;
 using Intro.Models.DTO;
 using Intro.Models.Model;
-using Intro.WebApi.Repositories;
+using Intro.WebApi;
+using Intro.WebApi.Repositories.Interfaces;
 using Intro.WebApi.Services;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -11,8 +14,12 @@ namespace Intro.Tests
     public class UserAPITests
     {
         public UserServices _userService;
-        public Mock<IRepository<UserTitle>> _userTitleRepository;
-        public Mock<IRepository<UserType>> _userTypeRepository;
+
+        public Mock<IUserRepository> _userRepository;
+        public Mock<IUserTitleRepository> _userTitleRepository;
+        public Mock<IUserTypeRepository> _usertTypeRepository;
+        public Mock<ILogger<UserServices>> _logger;
+        public IMapper _mapper;
 
         /// <summary>
         /// Setups Test instance.
@@ -20,7 +27,20 @@ namespace Intro.Tests
         [TestInitialize]
         public void Setup()
         {
-            _userService = new UserServices(_userTitleRepository.Object, _userTypeRepository.Object);
+            // Mock logger and repositories
+            _logger = new Mock<ILogger<UserServices>>();
+            _userRepository = new Mock<IUserRepository>();
+            _userTitleRepository = new Mock<IUserTitleRepository>();
+            _usertTypeRepository = new Mock<IUserTypeRepository>();
+
+            // Configure Automapper
+            var userMappingConfig = new MapperConfiguration(c =>
+            {
+                c.AddProfile(new UserMappingProfile());
+            });
+            _mapper = userMappingConfig.CreateMapper();
+
+            _userService = new UserServices(_logger.Object, _userRepository.Object, _mapper);
         }
 
         /// <summary>
@@ -30,7 +50,6 @@ namespace Intro.Tests
         [TestMethod]
         public void AssertUserIsDeleted_Success()
         {
-            #region Create User Entity
             // TODO regions within methods should be avoided
             User user = new User
             {
@@ -41,7 +60,7 @@ namespace Intro.Tests
                 EmailAddress = "test@test.gr",
                 UserTitle = new UserTitle
                 {
-                    Id=1,
+                    Id = 1,
                     Description = "Title Description",
                 },
                 UserType = new UserType
@@ -52,11 +71,10 @@ namespace Intro.Tests
                 },
                 IsActive = true
             };
-            #endregion
 
-            user = _userService.DeleteUser(user);
+            var deletedUserEntity = _userService.DeleteUserAction(user);
 
-            Assert.AreEqual(user.IsActive, false);
+            Assert.AreEqual(deletedUserEntity.IsActive, false);
         }
 
         /// <summary>
@@ -66,22 +84,20 @@ namespace Intro.Tests
         [TestMethod]
         public void TestAddUser_AssertSuccess()
         {
-            UserDTO dto = new UserDTO
+            CreateEditUserDTO dto = new CreateEditUserDTO
             {
                 Name = "John",
                 Surname = "Doe",
                 BirthDate = System.DateTime.Now,
                 EmailAddress = "test@mail.gr",
-                UserTitleDescription = "Title Description",
-                UserTypeDescription = "Type Description",
-                UserTypeCode = "TS"
+                UserTitleId = 5,
+                UserTypeId = 5
             };
 
-            User user = _userService.CreateUserEntity(dto);
+            User user = _userService.CreateUserAction(dto);
 
-            Assert.AreEqual(dto.Name,user.Name);
-            Assert.AreEqual(dto.UserTitleDescription, user.UserTitle.Description);
-            Assert.AreEqual(user.IsActive,true);
+            Assert.AreEqual(dto.Name, user.Name);
+            Assert.AreEqual(user.IsActive, true);
         }
 
         /// <summary>
@@ -90,7 +106,6 @@ namespace Intro.Tests
         [TestMethod]
         public void TestEditUser_assertSuccess()
         {
-            #region Create User Entity and DTO
             User user = new User
             {
                 Id = 1,
@@ -112,24 +127,21 @@ namespace Intro.Tests
                 IsActive = true
             };
 
-            UserDTO dto = new UserDTO
+            CreateEditUserDTO dto = new CreateEditUserDTO
             {
                 Id = 1,
                 Name = "John",
                 Surname = "Doe",
                 BirthDate = System.DateTime.Now,
                 EmailAddress = "test@mail.gr",
-                UserTitleDescription = "Title Description",
-                UserTypeDescription = "Type Description",
-                UserTypeCode = "TS"
+                UserTitleId = 1,
+                UserTypeId = 1
             };
-            #endregion
 
             user = _userService.EditUserAction(user, dto);
 
             Assert.AreEqual(user.Name, dto.Name);
             Assert.AreEqual(user.EmailAddress, dto.EmailAddress);
         }
-
     }
 }

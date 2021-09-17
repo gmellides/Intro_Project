@@ -32,12 +32,10 @@ namespace Intro.WebApi.Services
         /// Creates the user asynchronous.
         /// </summary>
         /// <param name="userDTO">The user dto.</param>
-        public async Task CreateUserAsync(UserDTO userDTO)
+        public async Task CreateUserAsync(CreateEditUserDTO userDTO)
         {
             if (userDTO == null)
-            {
                 throw new ArgumentNullException(nameof(UserDTO));
-            }
 
             try
             {
@@ -56,7 +54,7 @@ namespace Intro.WebApi.Services
         /// <param name="userId">The user identifier.</param>
         /// <param name="userDTO">The user dto.</param>
         /// <exception cref="System.NullReferenceException">Edit User Async -</exception>
-        public async Task EditUserAsync(int userId, UserDTO userDTO)
+        public async Task EditUserAsync(int userId, CreateEditUserDTO userDTO)
         {
             try
             {
@@ -172,7 +170,7 @@ namespace Intro.WebApi.Services
         /// <param name="user">The user.</param>
         /// <param name="userDTO">The user dto.</param>
         /// <returns>A user entity with edited fields</returns>
-        internal User EditUserAction(User user, UserDTO userDTO)
+        internal User EditUserAction(User user, CreateEditUserDTO userDTO)
         {
             if (user != null)
             {
@@ -188,14 +186,11 @@ namespace Intro.WebApi.Services
                 if (user.EmailAddress != userDTO.EmailAddress)
                     user.EmailAddress = userDTO.EmailAddress;
 
-                if (user.UserType.Code != userDTO.UserTypeCode)
-                    user.UserType.Code = userDTO.UserTypeCode;
+                if (user.UserTypeId != userDTO.UserTypeId)
+                    user.UserTypeId = userDTO.UserTypeId;
 
-                if (user.UserType.Description != userDTO.UserTypeDescription)
-                    user.UserType.Description = userDTO.UserTypeDescription;
-
-                if (user.UserTitle.Description != userDTO.UserTitleDescription)
-                    user.UserTitle.Description = userDTO.UserTitleDescription;
+                if (user.UserTitleId != userDTO.UserTitleId)
+                    user.UserTitleId = userDTO.UserTitleId;
 
                 return user;
             }
@@ -209,11 +204,9 @@ namespace Intro.WebApi.Services
         /// </summary>
         /// <param name="userDTO">The user dto.</param>
         /// <returns>A single entity with values based in userDTO</returns>
-        internal User CreateUserAction(UserDTO userDTO)
+        internal User CreateUserAction(CreateEditUserDTO userDTO)
         {
             var user = _mapper.Map<User>(userDTO);
-            user.IsActive = true;
-
             return user;
         }
     }

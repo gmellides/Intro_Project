@@ -11,7 +11,7 @@ namespace Intro.WebApi.Services.Interfaces
         /// </summary>
         /// <param name="userDTO">The user dto.</param>
         /// <returns></returns>
-        Task CreateUserAsync(UserDTO userDTO);
+        Task CreateUserAsync(CreateEditUserDTO userDTO);
 
         /// <summary>
         /// Edits the user asynchronous.
@@ -19,7 +19,7 @@ namespace Intro.WebApi.Services.Interfaces
         /// <param name="userId">The user identifier.</param>
         /// <param name="userDTO">The user dto.</param>
         /// <returns></returns>
-        Task EditUserAsync(int userId, UserDTO userDTO);
+        Task EditUserAsync(int userId, CreateEditUserDTO userDTO);
 
         /// <summary>
         /// Deletes the user asynchronous.

@@ -69,9 +69,9 @@ namespace Intro.WebApi.Controllers
         /// <summary>
         /// Users controller Post action
         /// </summary>
-        /// <param name="userDTO">User information that needs to be added.</param>
+        /// <param name="CreateEditUserDTO">User information that needs to be added.</param>
         [HttpPost]
-        public async Task<ActionResult> PostUser(UserDTO userDTO)
+        public async Task<ActionResult> PostUser(CreateEditUserDTO userDTO)
         {
             try
             {
@@ -91,11 +91,11 @@ namespace Intro.WebApi.Controllers
         /// Puts the user.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
-        /// <param name="userDTO">The user dto.</param>
+        /// <param name="CreateEditUserDTO">The user dto.</param>
         /// <returns>200 - User is edited, 500 - in case of exception</returns>
         [HttpPut]
         [Route("{userId}")]
-        public async Task<ActionResult> PutUser(int userId, UserDTO userDTO)
+        public async Task<ActionResult> PutUser(int userId, CreateEditUserDTO userDTO)
         {
             try
             {
